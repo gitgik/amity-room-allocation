@@ -36,7 +36,7 @@ livingspace_list = [
 class Amity(object):
     """ get the list of allocations """
     def get_allocation(self):
-        pass
+
 
     """ allocate office space """
     def allocate_office_space(self):
