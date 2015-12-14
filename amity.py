@@ -31,6 +31,9 @@ class Amity(object):
     def allocate_room(self):
         office = Office(office_rooms)
         office_names = office.populate_room_names()
+        livingspace = LivingSpace(living_rooms)
+        living_names = livingspace.populate_room_names()
+
         """ shuffle room numbers at random """
         room_index = list(range(len(office_names)))
         random.shuffle(room_index)
@@ -53,9 +56,21 @@ class Amity(object):
                         persons_description[0] + ' ' + persons_description[1])
                     print office_names[random_room]
                 else:
-                    pass
-                    # maximum = office.maximum_size
-                    # rand = round(random.random() * maximum)
+                    if persons_description[3] == "Y":
+                        """ fellow needs a place to live AND office """
+                        office_names[random_room].append(
+                            persons_description[0] +
+                            ' ' + persons_description[1])
+                        living_names[random_room].append(
+                            persons_description[0] +
+                            ' ' + persons_description[1])
+                    else:
+                        """ fellow does not need accomodation """
+                        office_names[random_room].append(
+                            persons_description[0] +
+                            ' ' + persons_description[1])
+                        # maximum = office.maximum_size
+                        # rand = round(random.random() * maximum)
 
 amity = Amity()
 amity.print_rooms()
