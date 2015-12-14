@@ -36,7 +36,8 @@ livingspace_list = [
 class Amity(object):
     """ get the list of allocations """
     def get_allocation(self):
-        pass
+        print self.allocate_office_space()
+        print self.allocate_living_space()
 
     """ allocate office space """
     def allocate_office_space(self):
@@ -106,9 +107,10 @@ class Amity(object):
             else:
                 continue
             index += 1
-        print living_rooms
+
         return living_rooms
 
 amity = Amity()
 amity.allocate_living_space()
-
+amity.allocate_office_space()
+amity.get_allocation()
