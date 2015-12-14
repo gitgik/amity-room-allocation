@@ -39,12 +39,13 @@ class Amity(object):
 
     def allocate_room(self):
         office = Office(office_rooms)
+        living = LivingSpace(living_rooms)
         office_names = office.populate_room_names()
         livingspace = LivingSpace(living_rooms)
         living_names = livingspace.populate_room_names()
 
         """ shuffle room numbers at random """
-        room_index = list(range(len(office_names)))
+        room_index = list(range(10))
         random.shuffle(room_index)
         print room_index
 
@@ -54,40 +55,35 @@ class Amity(object):
         ]
         index = 0
         """ loop through each person to determine their affiliations """
-        for i in employees:
-                chosen_room = room_index[index]
-                persons_description = [x.rstrip() for x in i.split(" ")]
+        for person in employees:
+            """ use space char as the delimeter """
+            persons_description = [x.rstrip() for x in person.split(" ")]
 
-                """ check whether they are fellows or employees """
-                if persons_description[2] == "Staff":
+            chosen_room = room_index[index % 10]
+            living_key = livingspace_list[chosen_room]
+            office_key = office_list[chosen_room]
+
+            if len(office_names[office_key]) <= office.maximum_size:
+                """ check whether they are fellows or staff """
+                if persons_description[2].upper() == 'STAFF' or 'FELLOW':
                     """ allocate only office space """
-                    key = office_list[chosen_room]
-                    office_names[key].append(
+                    office_names[office_key].append(
                         persons_description[0] + ' ' + persons_description[1])
-                elif persons_description[2] == "Fellow":
-                    okey = office_list[chosen_room]
-                    lkey = livingspace_list[chosen_room]
+
+            if len(living_names[living_key]) <= living.maximum_size:
+                if persons_description[2].upper() == 'FELLOW':
                     if len(persons_description) >= 4:
-                        """ fellow needs a place to live AND office """
-                        office_names[okey].append(
-                            persons_description[0] +
-                            ' ' + persons_description[1])
-                        living_names[lkey].append(
-                            persons_description[0] +
-                            ' ' + persons_description[1])
-                    else:
-                        """ fellow does not need accomodation """
-                        office_names[okey].append(
-                            persons_description[0] +
-                            ' ' + persons_description[1])
+                        if persons_description[3] == 'Y':
+                            """ fellow needs a place to live too """
+                            living_names[living_key].append(
+                                persons_description[0] +
+                                ' ' + persons_description[1])
 
-
-                index += 1
-                        # maximum = office.maximum_size
-                        # rand = round(random.random() * maximum)
+            """ pick a different room next iteration """
+            index += 1
 
         print office_names
+        print living_names
 amity = Amity()
-amity.print_rooms()
 amity.allocate_room()
 
