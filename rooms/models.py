@@ -1,18 +1,10 @@
 # models.py
 class Room(object):
-    space = {}
-
     def __init__(self, dict_of_rooms):
         self.room_dict = dict_of_rooms
-        self.members = []
-
-    """ The size of the room """
-    def size(self):
-        return len(self.members)
 
     def members_names(self, room_name):
-        # member_list = [member for member in self.members]
-        return self.space[room_name]
+        return self.room_dict[room_name]
 
     """ pre-populate the rooms dictionaries with list of names """
     def populate_room_names(self):
@@ -21,9 +13,9 @@ class Room(object):
 
 
 class Office(Room):
-    maximum_size = 6
+    maximum_size = 3
 
 
 class LivingSpace(Room):
-    maximum_size = 4
+    maximum_size = 1
 
