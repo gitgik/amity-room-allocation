@@ -1,5 +1,5 @@
 # amity.py
-from employees.model import Staff, Fellow
+from employees.model import Person
 from rooms.models import Office, LivingSpace
 import random
 import sys
@@ -34,6 +34,7 @@ livingspace_list = [
 
 
 class Amity(object):
+<<<<<<< HEAD
     """ get the list of allocations """
     def get_allocation(self):
 <<<<<<< HEAD
@@ -42,9 +43,19 @@ class Amity(object):
         print self.allocate_office_space()
         print self.allocate_living_space()
 >>>>>>> develop
+=======
+    """ get the occupants in a given room"""
+    def get_room_occupants(self, room_name):
+        o = self.allocate_office_space()
+        l = self.allocate_living_space()
+        return o[room_name] or l[room_name]
+>>>>>>> develop
 
     """ allocate office space """
     def allocate_office_space(self):
+        listof = Person()
+        unallocated = listof.unallocated()
+
         office_space = Office(office)
         office_rooms = office_space.populate_room_names()
 
@@ -58,6 +69,7 @@ class Amity(object):
             employees.rstrip('\n') for employees in open(sys.argv[1], 'r')
         ]
         index = 0
+
         """ loop through each person to determine their affiliations """
         for person in employees:
             """ use space char as the delimeter """
@@ -72,17 +84,22 @@ class Amity(object):
                 office_rooms[office_key].append(
                     persons_description[0] + ' ' + persons_description[1])
             else:
-                continue
-            """ pick a different room next iteration """
-            index += 1
+                """ those who missed rooms """
+                unallocated.append(
+                    persons_description[0] + ' ' + persons_description[1])
 
+            """ pick a different room for the next iteration """
+            index += 1
+        print unallocated
         return office_rooms
 
     """ allocate living space """
     def allocate_living_space(self):
+        listof = Person()
+        unallocated = listof.unallocated()
+
         living_space = LivingSpace(living)
         living_rooms = living_space.populate_room_names()
-        """ check for fellows who want accomodation """
 
         """ shuffle room numbers at random """
         room_index = list(range(10))
@@ -109,12 +126,12 @@ class Amity(object):
                                 persons_description[0] +
                                 ' ' + persons_description[1])
             else:
-                continue
+                """ those who missed rooms """
+                unallocated.append(
+                    persons_description[0] + ' ' + persons_description[1])
             index += 1
-
+        print unallocated
         return living_rooms
 
 amity = Amity()
-amity.allocate_living_space()
-amity.allocate_office_space()
-amity.get_allocation()
+print amity.get_room_occupants("valhalla")
