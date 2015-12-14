@@ -5,14 +5,14 @@ import random
 import sys
 
 """ office names: will contain names of people after allocations """
-office_rooms = {
+office = {
     "allegro": [], "boma": [], "valhalla": [],
     "hogwarts": [], "krypton": [], "oculus": [],
     "gondolla": [], "amitoid": [], "punta": [], "borabora": []
 }
 
 """ living space names """
-living_rooms = {
+living = {
     'Green': [], 'Blue': [], 'Yellow': [], 'Lilac': [],
     'Orange': [], 'White': [], 'Brown': [],
     'Turquoise': [], 'Grey': [], 'Purple': []
@@ -32,17 +32,16 @@ livingspace_list = [
     'Orange', 'White', 'Brown', 'Turquoise', 'Grey', 'Purple'
  ]
 
-class Amity(object):
-    def print_rooms(self):
-        office = Office(office_rooms)
-        print office.populate_room_names()
 
-    def allocate_room(self):
-        office = Office(office_rooms)
-        living = LivingSpace(living_rooms)
-        office_names = office.populate_room_names()
-        livingspace = LivingSpace(living_rooms)
-        living_names = livingspace.populate_room_names()
+class Amity(object):
+    """ get the list of allocations """
+    def get_allocation(self):
+        pass
+
+    """ allocate office space """
+    def allocate_office_space(self):
+        office_space = Office(office)
+        office_rooms = office_space.populate_room_names()
 
         """ shuffle room numbers at random """
         room_index = list(range(10))
@@ -60,30 +59,56 @@ class Amity(object):
             persons_description = [x.rstrip() for x in person.split(" ")]
 
             chosen_room = room_index[index % 10]
-            living_key = livingspace_list[chosen_room]
             office_key = office_list[chosen_room]
 
-            if len(office_names[office_key]) <= office.maximum_size:
-                """ check whether they are fellows or staff """
-                if persons_description[2].upper() == 'STAFF' or 'FELLOW':
-                    """ allocate only office space """
-                    office_names[office_key].append(
-                        persons_description[0] + ' ' + persons_description[1])
+            """ allocate only office space """
+            if len(office_rooms[office_key]) <= office_space.maximum_size:
+                """ allocate office space to everyone """
+                office_rooms[office_key].append(
+                    persons_description[0] + ' ' + persons_description[1])
+            else:
+                continue
+            """ pick a different room next iteration """
+            index += 1
 
-            if len(living_names[living_key]) <= living.maximum_size:
+        return office_rooms
+
+    """ allocate living space """
+    def allocate_living_space(self):
+        living_space = LivingSpace(living)
+        living_rooms = living_space.populate_room_names()
+        """ check for fellows who want accomodation """
+
+        """ shuffle room numbers at random """
+        room_index = list(range(10))
+        random.shuffle(room_index)
+        print room_index
+
+        """ read the employees from the input .txt file """
+        employees = [
+            employees.rstrip('\n') for employees in open(sys.argv[1], 'r')
+        ]
+        index = 0
+        """ loop through each person to determine their affiliations """
+        for person in employees:
+            """ use space char as the delimeter """
+            persons_description = [x.rstrip() for x in person.split(" ")]
+            chosen_room = room_index[index % 10]
+            living_key = livingspace_list[chosen_room]
+            if len(living_rooms[living_key]) <= living_space.maximum_size:
                 if persons_description[2].upper() == 'FELLOW':
                     if len(persons_description) >= 4:
                         if persons_description[3] == 'Y':
                             """ fellow needs a place to live too """
-                            living_names[living_key].append(
+                            living_rooms[living_key].append(
                                 persons_description[0] +
                                 ' ' + persons_description[1])
-
-            """ pick a different room next iteration """
+            else:
+                continue
             index += 1
+        print living_rooms
+        return living_rooms
 
-        print office_names
-        print living_names
 amity = Amity()
-amity.allocate_room()
+amity.allocate_living_space()
 
