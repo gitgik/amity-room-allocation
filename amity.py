@@ -34,22 +34,11 @@ livingspace_list = [
 
 
 class Amity(object):
-<<<<<<< HEAD
-    """ get the list of allocations """
-    def get_allocation(self):
-<<<<<<< HEAD
-
-=======
-        print self.allocate_office_space()
-        print self.allocate_living_space()
->>>>>>> develop
-=======
     """ get the occupants in a given room"""
     def get_room_occupants(self, room_name):
         o = self.allocate_office_space()
         l = self.allocate_living_space()
         return o[room_name] or l[room_name]
->>>>>>> develop
 
     """ allocate office space """
     def allocate_office_space(self):

@@ -13,9 +13,9 @@ class Room(object):
 
 
 class Office(Room):
-    maximum_size = 3
+    maximum_size = 6
 
 
 class LivingSpace(Room):
-    maximum_size = 1
+    maximum_size = 4
 
