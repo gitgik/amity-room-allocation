@@ -1,4 +1,5 @@
-# amity.py
+# a random room allocation algorithm
+
 from employees.model import Person
 from rooms.models import Office, LivingSpace
 import random
@@ -12,17 +13,9 @@ if __name__ == "__main__":
         print "Usage: python amity.py <text file>"
         sys.exit(1)
 
-
-""" office names: will contain names of people after allocations """
-office = {
-    "allegro": [], "boma": [], "valhalla": [],
-    "hogwarts": [], "krypton": [], "oculus": [],
-    "gondolla": [], "amitoid": [], "punta": [], "borabora": []
-}
-
 """ create a list of rooms (both office and living space)
     which will be used to obtain the key to their respective
-    dictionary definitions during allocations
+    dictionary definitions during random allocations
 """
 office_list = [
     'allegro', 'boma', 'valhalla',
@@ -45,11 +38,9 @@ class Amity(object):
 
     """ allocate office space """
     def allocate_office_space(self):
-        listof = Person()
-        unallocated = listof.unallocated()
-
         office_space = Office()
         office_rooms = office_space.populate_room_names()
+        unalloc = []
 
         """ shuffle room numbers at random """
         room_index = list(range(10))
@@ -75,27 +66,26 @@ class Amity(object):
             office_key = office_list[chosen_room]
 
             """ allocate only office space if space is available """
-            if len(office_rooms[office_key]) < office_space.maximum_size:
+            if len(office_rooms[office_key]) < office_space.capacity:
                 """ allocate office space to everyone """
                 office_rooms[office_key].append(
                     persons_description[0] + ' ' + persons_description[1])
             else:
                 """ those who missed rooms """
-                unallocated.append(
-                    persons_description[0] + ' ' + persons_description[1])
+                unalloc.append(person)
 
             """ pick a different room for the next iteration """
             index += 1
+        if len(unalloc) != 0:
+            print office_space.unallocated(unalloc)
 
         return office_rooms
 
     """ allocate living space """
     def allocate_living_space(self):
-        person = Person()
-        unallocated_for_living = person.unallocated()
-
         living_space = LivingSpace()
         living_rooms = living_space.populate_room_names()
+        unalloc = []
 
         """ shuffle room numbers at random """
         room_index = list(range(10))
@@ -126,17 +116,17 @@ class Amity(object):
             chosen_room = room_index[index % 10]
             living_key = livingspace_list[chosen_room]
             """ ensure the rooms are available """
-            if len(living_rooms[living_key]) < living_space.maximum_size:
+            if len(living_rooms[living_key]) < living_space.capacity:
                 """ a fellow needs a place to live too """
                 living_rooms[living_key].append(
                     persons_description[0] +
                     ' ' + persons_description[1])
             else:
                 """ those who missed rooms """
-                unallocated_for_living.append(
-                    persons_description[0] + ' ' + persons_description[1])
+                unalloc.append(person)
             index += 1
-        print unallocated_for_living
+        if len(unalloc) != 0:
+            living_space.unallocated(unalloc)
         return living_rooms
 
 amity = Amity()
@@ -144,7 +134,5 @@ office = Office()
 living = LivingSpace()
 office.save(amity.allocate_office_space())
 living.save(amity.allocate_living_space())
-print office.room_dict
-print '\n'
-print living.room_dict
-living.save(amity.allocate_living_space())
+print office.get_room_occupants("valhalla")
+print office.unallocated_people
