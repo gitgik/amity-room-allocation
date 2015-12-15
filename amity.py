@@ -20,12 +20,6 @@ office = {
     "gondolla": [], "amitoid": [], "punta": [], "borabora": []
 }
 
-""" living space names """
-living = {
-    'Green': [], 'Blue': [], 'Yellow': [], 'Lilac': [],
-    'Orange': [], 'White': [], 'Brown': [],
-    'Turquoise': [], 'Grey': [], 'Purple': []
-}
 """ create a list of rooms (both office and living space)
     which will be used to obtain the key to their respective
     dictionary definitions during allocations
@@ -54,7 +48,7 @@ class Amity(object):
         listof = Person()
         unallocated = listof.unallocated()
 
-        office_space = Office(office)
+        office_space = Office()
         office_rooms = office_space.populate_room_names()
 
         """ shuffle room numbers at random """
@@ -100,13 +94,12 @@ class Amity(object):
         person = Person()
         unallocated_for_living = person.unallocated()
 
-        living_space = LivingSpace(living)
+        living_space = LivingSpace()
         living_rooms = living_space.populate_room_names()
 
         """ shuffle room numbers at random """
         room_index = list(range(10))
         random.shuffle(room_index)
-        print room_index
 
         """ read the employees from the input .txt file """
         employees = [
@@ -143,9 +136,15 @@ class Amity(object):
                 unallocated_for_living.append(
                     persons_description[0] + ' ' + persons_description[1])
             index += 1
-
+        print unallocated_for_living
         return living_rooms
 
 amity = Amity()
-print amity.allocate_office_space()
-print amity.allocate_living_space()
+office = Office()
+living = LivingSpace()
+office.save(amity.allocate_office_space())
+living.save(amity.allocate_living_space())
+print office.room_dict
+print '\n'
+print living.room_dict
+living.save(amity.allocate_living_space())
