@@ -9,7 +9,7 @@ if __name__ == "__main__":
     try:
         arg1 = sys.argv[1]
     except IndexError:
-        print "Usage: myprogram.py <text file>"
+        print "Usage: python amity.py <text file>"
         sys.exit(1)
 
 
@@ -97,7 +97,9 @@ class Amity(object):
 
     """ allocate living space """
     def allocate_living_space(self):
-        unallocated_people = []
+        person = Person()
+        unallocated_for_living = person.unallocated()
+
         living_space = LivingSpace(living)
         living_rooms = living_space.populate_room_names()
 
@@ -138,7 +140,7 @@ class Amity(object):
                     ' ' + persons_description[1])
             else:
                 """ those who missed rooms """
-                unallocated_people.append(
+                unallocated_for_living.append(
                     persons_description[0] + ' ' + persons_description[1])
             index += 1
 
