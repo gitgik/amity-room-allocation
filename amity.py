@@ -4,6 +4,15 @@ from rooms.models import Office, LivingSpace
 import random
 import sys
 
+""" exit gracefully when the text file to read is missing """
+if __name__ == "__main__":
+    try:
+        arg1 = sys.argv[1]
+    except IndexError:
+        print "Usage: myprogram.py <text file>"
+        sys.exit(1)
+
+
 """ office names: will contain names of people after allocations """
 office = {
     "allegro": [], "boma": [], "valhalla": [],
@@ -51,7 +60,6 @@ class Amity(object):
         """ shuffle room numbers at random """
         room_index = list(range(10))
         random.shuffle(room_index)
-        print room_index
 
         """ read each line of input .txt file """
         employees = [
