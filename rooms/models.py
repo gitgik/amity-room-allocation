@@ -17,7 +17,7 @@ class Room(object):
 """ a class that represents the office space rooms """
 class Office(Room):
     """ the capacity of a given office room """
-    capacity = 3
+    capacity = 6
 
     def populate_room_names(self):
         office = {
