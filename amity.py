@@ -34,14 +34,18 @@ class Amity(object):
     def get_people_from_file(people_file, print_it=None):
         """ parse from text file """
         people = []
-        with open(people_file, 'r') as f:
-            for line in f:
-                match = search(
-                  '^(\w+\s[^\s]+)[\s]{1,}(\w+)[\s]{0,}(\w)?', line)
-                details = match.groups()
-                name, role, wants_accomodation = details
-                person = Person.create(name, role, wants_accomodation)
-                people.append(person)
+        """ read each line from the file and store in a temp list """
+        employees = [
+            employees.rstrip('\n') for employees in open(sys.argv[1], 'r')
+        ]
+        for line in employees:
+            match = search(
+              '^(\w+\s[^\s]+)[\s]{1,}(\w+)[\s]{0,}(\w)?', line)
+            details = match.groups()
+            name, role, wants_accomodation = details
+            person = Person(name)
+            person.create(name, role, wants_accomodation)
+            people.append(person)
         if print_it is 'print':
             print people
         return people
@@ -63,22 +67,11 @@ class Amity(object):
         random.shuffle(room_index)
 
         """ read each line of input .txt file """
-        people = []
-        employees = [
-            employees.rstrip('\n') for employees in open(sys.argv[1], 'r')
-        ]
-        for line in employees:
-            match = search(
-                  '^(\w+\s[^\s]+)[\s]{1,}(\w+)[\s]{0,}(\w)?', line)
-            details = match.groups()
-            name, role, wants_accomodation = details
-            p = Person(name)
-            p.create(name, role, wants_accomodation)
-            people.append(p)
-        print people
+        employees = self.get_people_from_file(sys.argv[1])
+
         """
         randomly shuffle the employee list
-        to prevent unrandom FIFO behavior every time we allocate rooms
+        to prevent unrandom FIFO behavior every time we re-allocate rooms
         """
         random.shuffle(employees)
 
@@ -86,17 +79,14 @@ class Amity(object):
 
         """ loop through each person to determine their affiliations """
         for person in employees:
-            """ use space char as the delimeter """
-            persons_description = [x.rstrip() for x in person.split(' ')]
-
+            print person
             chosen_room = room_index[index % 10]
             office_key = office_list[chosen_room]
 
             """ allocate only office space if space is available """
             if len(office_rooms[office_key]) < office_space.capacity:
                 """ allocate office space to everyone """
-                office_rooms[office_key].append(
-                    persons_description[0] + ' ' + persons_description[1])
+                office_rooms[office_key].append(person)
             else:
                 """ those who missed rooms """
                 unalloc.append(person)
@@ -157,7 +147,7 @@ class Amity(object):
         return living_rooms
 
 amity = Amity()
-# amity.get_people_from_file(sys.argv[1])
+print amity.get_people_from_file(sys.argv[1])
 office = Office()
 living = LivingSpace()
 office.save(amity.allocate_office_space())
