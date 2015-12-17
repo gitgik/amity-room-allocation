@@ -52,6 +52,18 @@ class AllocationTestCase(unittest.TestCase):
             self.assertIsNotNone(o)
             self.assertIsNotNone(l)
 
+        def test_finding_room_occupants(self):
+            self.office = Office()
+            self.living = LivingSpace()
+            self.amity = Amity()
+            self.office.save(self.amity.allocate_office_space(file_path))
+            self.living.save(self.amity.allocate_living_space(file_path))
+            oculus_roomies = self.office.get_room_occupants('oculus')
+            blue_roomies = self.living.get_room_occupants('blue')
+            assigned_person1 = oculus_roomies[0]
+            assigned_person2 = blue_roomies[0]
+            self.assertIsInstance(assigned_person1, Person)
+            self.assertIsInstance(assigned_person2, Person)
 
 
 class FileInputTestCase(unittest.TestCase):

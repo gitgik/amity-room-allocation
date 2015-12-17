@@ -4,9 +4,6 @@ class Room(object):
         self.room_dict = dict_of_rooms
         self.unalloc_people = []
 
-    def get_room(self, room_name):
-        return self.room_dict[room_name.lower()]
-
     def get_room_occupants(self, room_name):
         """ get the occupants of a specific room """
         return self.room_dict[room_name.lower()]
@@ -26,7 +23,7 @@ class Office(Room):
     """ a class that represents the office space rooms """
 
     """ the capacity of a given office room """
-    capacity = 1
+    capacity = 6
 
     def populate_room_names(self):
         office = {

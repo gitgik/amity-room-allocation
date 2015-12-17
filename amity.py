@@ -61,14 +61,8 @@ class Amity(object):
 
         return people
 
-    def get_room_occupants(self, room_name):
-        """ get the occupants in a given room"""
-        o = self.allocate_office_space()
-        l = self.allocate_living_space()
-        return o[room_name] or l[room_name]
-
-    """ allocate office space """
     def allocate_office_space(self, input_file):
+        """ allocate office space """
         office_space = Office()
         office_rooms = office_space.populate_room_names()
         unalloc = []
