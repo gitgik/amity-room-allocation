@@ -1,10 +1,4 @@
-# amity-room-allocation
-
----
-
-![Travis CI Passing](https://travis-ci.org/andela-ggikera/amity-room-allocation.svg?branch=master).
-
----
+# Amity-Room-Allocation Algorithm  ![Travis CI Passing](https://travis-ci.org/andela-ggikera/amity-room-allocation.svg?branch=master).
 
 A room allocation algorithm for amity: implemented in Python.
 It's eccentric. Why? because it allocates rooms at random. Random is good.
@@ -13,7 +7,6 @@ It's eccentric. Why? because it allocates rooms at random. Random is good.
 
 ## Instructions
 
----
 1. Clone the repo by simply executing the command
 
 `` git clone https://github.com/andela-ggikera/amity-room-allocation.git ``
