@@ -57,7 +57,7 @@ class Amity(object):
 
         """ give output - debugging option """
         if print_it is 'yes':
-            print people
+            print (people)
 
         return people
 
@@ -93,7 +93,7 @@ class Amity(object):
             """ pick a different room for the next iteration """
             index += 1
         if len(unalloc) > 0:
-            print office_space.unallocated_people(unalloc)
+            print (office_space.unallocated_people(unalloc))
 
         return office_rooms
 
