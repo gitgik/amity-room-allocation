@@ -60,13 +60,14 @@ class Fellow(Person):
     def wants_living_space(self):
         return True if self.wants_accomodation else False
 
-    def has_living_space(self):
-        """ check if a fellow has accomodation """
-        return True if self.living_space is not None else False
-
     def assign_living_space(self, room):
         """ assign accomodation room to fellow """
         self.living_space = room
+        return self.living_space
+
+    def has_living_space(self):
+        """ check if a fellow has accomodation """
+        return True if self.living_space is not None else False
 
     def __repr__(self):
         return "(Fellow: {0}, {1})".format(self.name, self.wants_accomodation)
