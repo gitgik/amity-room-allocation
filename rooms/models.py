@@ -1,5 +1,17 @@
-# models.py
+# !/usr/bin/python
+# title          :amity/alloc.py
+# description    :An algorithm which randomly allocates
+#                 persons to rooms in a building.
+# author         :Jee Githinji
+# email          :githinji.gikera@andela.com
+# date           :20151218
+# version        :0.0.1
+# python_version :2.7.10
+# ==============================================================================
+
+
 class Room(object):
+    """ this class represents a room in a building """
     def __init__(self, dict_of_rooms=None):
         self.room_dict = dict_of_rooms
         self.unalloc_people = []
@@ -20,12 +32,13 @@ class Room(object):
 
 
 class Office(Room):
-    """ a class that represents the office space rooms """
+    """ this class represents the office-space rooms """
 
     """ the capacity of a given office room """
     capacity = 6
 
     def populate_room_names(self):
+        """ populate empty office space with room names """
         office = {
             "allegro": [], "boma": [], "valhalla": [],
             "hogwarts": [], "krypton": [], "oculus": [],
@@ -41,13 +54,13 @@ class Office(Room):
 
 
 class LivingSpace(Room):
-    """ a class that represents the living space for fellows """
+    """ this class represents the living space for fellows """
 
     """ the capacity of a given office room """
     capacity = 4
 
     def populate_room_names(self):
-        """ living space names """
+        """ populate the empty living space  with room names """
         living = {
             'green': [], 'blue': [], 'yellow': [], 'lilac': [],
             'orange': [], 'white': [], 'brown': [],
@@ -56,7 +69,7 @@ class LivingSpace(Room):
         self.room_dict = dict([(key, []) for key in living])
         return self.room_dict
 
-    """ Save the allocated room and their respective occupants """
     def save(self, room_dictionary):
+        """ Save allocated rooms with occupants """
         self.room_dict = room_dictionary
         return self.room_dict

@@ -1,4 +1,13 @@
-# a random room allocation algorithm
+# !/usr/bin/python
+# title          :amity/alloc.py
+# description    :An algorithm which randomly allocates
+#                 persons to rooms in a building.
+# author         :Jee Githinji
+# email          :githinji.gikera@andela.com
+# date           :20151218
+# version        :0.0.1
+# python_version :2.7.10
+# ==============================================================================
 
 from employees.model import Person, Fellow, Staff
 from rooms.models import Office, LivingSpace
@@ -14,8 +23,8 @@ if __name__ == "__main__":
         print ("Usage: python amity.py <text file>")
         sys.exit(1)
 
-""" create a list of rooms (both office and living space)
-    which will be used to obtain the key to their respective
+"""
+    create a list of keys to the office
     dictionary definitions during random allocations
 """
 office_list = [
@@ -23,7 +32,10 @@ office_list = [
     'hogwarts', 'krypton', 'oculus', 'gondolla',
     'amitoid', 'punta', 'borabora'
 ]
-
+"""
+    create a list of keys to the living space
+    dictionary definitions during random allocations
+"""
 livingspace_list = [
     'green', 'blue', 'yellow', 'lilac',
     'orange', 'white', 'brown', 'turquoise', 'grey', 'purple'
@@ -31,6 +43,8 @@ livingspace_list = [
 
 
 class Amity(object):
+    """ this class randomly allocates rooms to persons """
+
     @staticmethod
     def get_people_from_file(people_file, print_it=None):
         """ parse from text file """
@@ -120,7 +134,7 @@ class Amity(object):
 
                 if len(living_rooms[living_key]) < living_space.capacity:
                     """ a fellow needs a place to live too """
-                    if person.wants_accomodation:
+                    if person.wants_living_space():
                         living_rooms[living_key].append(person)
                 else:
                     """ those who missed rooms """

@@ -1,3 +1,14 @@
+# !/usr/bin/python
+# title          :amity/alloc.py
+# description    :An algorithm which randomly allocates
+#                 persons to rooms in a building.
+# author         :Jee Githinji
+# email          :githinji.gikera@andela.com
+# date           :20151218
+# version        :0.0.1
+# python_version :2.7.10
+# ==============================================================================
+
 import unittest
 import nose
 
@@ -10,6 +21,8 @@ file_path = 'input.txt'
 
 
 class RoomPersonTestCase(unittest.TestCase):
+    """ test the instantiation of rooms and people """
+
     def setup(self):
         self.office = Office()
         self.living = LivingSpace()
@@ -20,12 +33,14 @@ class RoomPersonTestCase(unittest.TestCase):
         self.staff = Person.create('Chidi Nnadi', 'staff')
 
     def test_room_creation(self):
+        """ create rooms and test against their class instances """
         self.office = Office()
         self.living = LivingSpace()
         self.assertIsInstance(self.office, Office)
         self.assertIsInstance(self.living, LivingSpace)
 
     def test_fellow_staff_creation(self):
+        """ create employees and test against their class instances """
         self.f = Person.create(
             'Jee Gikera', 'fellow', wants_accomodation=True)
         self.staff = Person.create('Chidi Nnadi', 'staff')
@@ -34,39 +49,50 @@ class RoomPersonTestCase(unittest.TestCase):
 
 
 class AllocationTestCase(unittest.TestCase):
-        def test_room_generation(self):
-            self.office = Office()
-            self.living = LivingSpace()
-            office_rooms = self.office.populate_room_names()
-            living_rooms = self.living.populate_room_names()
-            self.assertEquals(len(office_rooms), 10)
-            self.assertEquals(len(living_rooms), 10)
+    """ tests the allocation of rooms to persons """
 
-        def test_allocation_to_rooms(self):
-            self.office = Office()
-            self.living = LivingSpace()
-            self.amity = Amity()
-            o = self.office.save(self.amity.allocate_office_space(file_path))
-            l = self.living.save(self.amity.allocate_living_space(file_path))
+    def test_room_generation(self):
+        """ generate rooms and test their specs """
+        self.office = Office()
+        self.living = LivingSpace()
+        office_size = self.office.capacity
+        living_size = self.living.capacity
+        office_rooms = self.office.populate_room_names()
+        living_rooms = self.living.populate_room_names()
+        self.assertEquals(len(office_rooms), 10)
+        self.assertEquals(len(living_rooms), 10)
+        self.assertEquals(office_size, 6)
+        self.assertEquals(living_size, 4)
 
-            self.assertIsNotNone(o)
-            self.assertIsNotNone(l)
+    def test_allocation_to_rooms(self):
+        """ tests the allocation of rooms """
+        self.office = Office()
+        self.living = LivingSpace()
+        self.amity = Amity()
+        o = self.office.save(self.amity.allocate_office_space(file_path))
+        l = self.living.save(self.amity.allocate_living_space(file_path))
 
-        def test_finding_room_occupants(self):
-            self.office = Office()
-            self.living = LivingSpace()
-            self.amity = Amity()
-            self.office.save(self.amity.allocate_office_space(file_path))
-            self.living.save(self.amity.allocate_living_space(file_path))
-            valhalla_roomies = self.office.get_room_occupants('valhalla')
-            green_roomies = self.living.get_room_occupants('green')
-            assigned_person1 = valhalla_roomies[0]
-            assigned_person2 = green_roomies[0]
-            self.assertIsInstance(assigned_person1, Person)
-            self.assertIsInstance(assigned_person2, Person)
+        self.assertIsNotNone(o)
+        self.assertIsNotNone(l)
+
+    def test_finding_room_occupants(self):
+        """ tests getting a given room's occupants """
+        self.office = Office()
+        self.living = LivingSpace()
+        self.amity = Amity()
+        self.office.save(self.amity.allocate_office_space(file_path))
+        self.living.save(self.amity.allocate_living_space(file_path))
+        valhalla_roomies = self.office.get_room_occupants('valhalla')
+        green_roomies = self.living.get_room_occupants('green')
+        assigned_person1 = valhalla_roomies[0]
+        assigned_person2 = green_roomies[0]
+        self.assertIsInstance(assigned_person1, Person)
+        self.assertIsInstance(assigned_person2, Person)
 
 
 class FileInputTestCase(unittest.TestCase):
+    """ tests file IO to the program """
+
     def test_can_parse_people_from_file(self):
         persons = Amity.get_people_from_file(file_path)
         self.assertEquals(len(persons), 43)

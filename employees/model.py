@@ -1,7 +1,18 @@
-# models.
+# !/usr/bin/python
+# title          :amity/alloc.py
+# description    :An algorithm which randomly allocates
+#                 persons to rooms in a building.
+# author         :Jee Githinji
+# email          :githinji.gikera@andela.com
+# date           :20151218
+# version        :0.0.1
+# python_version :2.7.10
+# ==============================================================================
 
 
 class Person(object):
+    """ this class represents a person """
+
     def __init__(self, name):
         self.name = name
 
@@ -34,7 +45,8 @@ class Person(object):
 
 
 class Staff(Person):
-    """ represents a staff in amity"""
+    """ this class represents a staff in amity """
+
     def has_living_space(self):
         return False
 
@@ -43,7 +55,8 @@ class Staff(Person):
 
 
 class Fellow(Person):
-    """ represents a fellow in amity """
+    """ this class represents a fellow in amity """
+
     def wants_living_space(self):
         return True if self.wants_accomodation else False
 
@@ -60,6 +73,8 @@ class Fellow(Person):
 
 
 class Role:
-    """ represents the collective role of a person: either fellow or staff
+    """
+        this class represents the collective role of a person:
+        either fellow or staff
     """
     type_of = {'fellow': Fellow, 'staff': Staff}
