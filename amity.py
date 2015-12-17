@@ -25,8 +25,8 @@ office_list = [
 ]
 
 livingspace_list = [
-    'Green', 'Blue', 'Yellow', 'Lilac',
-    'Orange', 'White', 'Brown', 'Turquoise', 'Grey', 'Purple'
+    'green', 'blue', 'yellow', 'lilac',
+    'orange', 'white', 'brown', 'turquoise', 'grey', 'purple'
 ]
 
 
@@ -54,9 +54,9 @@ class Amity(object):
         to prevent unrandom FIFO behavior every time we re-allocate rooms
         """
         random.shuffle(people)
-        # for p in people:
-        #     print p
-        if print_it is 'print':
+
+        """ give output - debugging option """
+        if print_it is 'yes':
             print people
 
         return people
@@ -68,7 +68,7 @@ class Amity(object):
         return o[room_name] or l[room_name]
 
     """ allocate office space """
-    def allocate_office_space(self):
+    def allocate_office_space(self, input_file):
         office_space = Office()
         office_rooms = office_space.populate_room_names()
         unalloc = []
@@ -78,7 +78,7 @@ class Amity(object):
         random.shuffle(room_index)
 
         """ read each line of input .txt file """
-        employees = self.get_people_from_file(sys.argv[1])
+        employees = self.get_people_from_file(input_file)
 
         index = 0
 
@@ -98,13 +98,13 @@ class Amity(object):
 
             """ pick a different room for the next iteration """
             index += 1
-        if len(unalloc) != 0:
-            office_space.unallocated(unalloc)
+        if len(unalloc) > 0:
+            print office_space.unallocated_people(unalloc)
 
         return office_rooms
 
     """ allocate living space """
-    def allocate_living_space(self):
+    def allocate_living_space(self, input_file):
         living_space = LivingSpace()
         living_rooms = living_space.populate_room_names()
         unalloc = []
@@ -114,7 +114,7 @@ class Amity(object):
         random.shuffle(room_index)
 
         """ read each line of input .txt file """
-        employees = self.get_people_from_file(sys.argv[1])
+        employees = self.get_people_from_file(input_file)
 
         index = 0
         """ loop through each person to determine their affiliations """
@@ -133,13 +133,6 @@ class Amity(object):
                     unalloc.append(person)
                 index += 1
         if len(unalloc) != 0:
-            living_space.unallocated(unalloc)
+            living_space.unallocated_people(unalloc)
         return living_rooms
 
-# amity = Amity()
-# office = Office()
-# living = LivingSpace()
-# office.save(amity.allocate_office_space())
-# print living.save(amity.allocate_living_space())
-# print office.get_room_occupants("valhalla")
-# print office.unallocated_people

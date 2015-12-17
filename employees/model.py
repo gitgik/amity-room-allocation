@@ -14,7 +14,7 @@ class Person(object):
         if isinstance(person, Staff):
             person.wants_accomodation = False
         if isinstance(person, Fellow):
-            if wants_accomodation == 'Y':
+            if wants_accomodation == 'Y' or wants_accomodation is True:
                 person.wants_accomodation = True
             else:
                 person.wants_accomodation = False
@@ -30,7 +30,7 @@ class Person(object):
         self.office = office
 
     def __repr__(self):
-        return "Person: {0} {1}".format(self.name, self.wants_accomodation)
+        return "(Fellow: {0}, {1})".format(self.name, self.wants_accomodation)
 
 
 class Staff(Person):
@@ -39,7 +39,7 @@ class Staff(Person):
         return False
 
     def __repr__(self):
-        return "Staff: {0} {1}".format(self.name, self.wants_accomodation)
+        return "(Staff: {0}, {1})".format(self.name, self.wants_accomodation)
 
 
 class Fellow(Person):
@@ -56,7 +56,7 @@ class Fellow(Person):
         self.living_space = room
 
     def __repr__(self):
-        return "Fellow: {0} {1}".format(self.name, self.wants_accomodation)
+        return "(Fellow: {0}, {1})".format(self.name, self.wants_accomodation)
 
 
 class Role:

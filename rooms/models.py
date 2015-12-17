@@ -1,25 +1,32 @@
 # models.py
 class Room(object):
-    def __init__(self, dict_or_list=None):
-        self.room_dict = dict_or_list
-        self.unallocated_people = dict_or_list
+    def __init__(self, dict_of_rooms=None):
+        self.room_dict = dict_of_rooms
+        self.unalloc_people = []
 
     def get_room(self, room_name):
-        return self.room_dict[room_name]
+        return self.room_dict[room_name.lower()]
 
     def get_room_occupants(self, room_name):
-        return self.room_dict[room_name]
+        """ get the occupants of a specific room """
+        return self.room_dict[room_name.lower()]
 
-    def unallocated(self, unallocated_list):
-        self.unallocated_people = unallocated_list
-        return self.unallocated_people
+    def unallocated_people(self, unallocated_list):
+        if len(unallocated_list) > 0:
+            self.unalloc_people = unallocated_list
+            return self.unalloc_people
+        else:
+            return False
+
+    def get_unallocated_people(self):
+        return self.unalloc_people
 
 
 class Office(Room):
     """ a class that represents the office space rooms """
 
     """ the capacity of a given office room """
-    capacity = 6
+    capacity = 1
 
     def populate_room_names(self):
         office = {
@@ -35,10 +42,6 @@ class Office(Room):
         self.room_dict = room_dictionary
         return self.room_dict
 
-    def unallocated(self, unallocated_list):
-        self.unallocated_people = unallocated_list
-        return self.unallocated_people
-
 
 class LivingSpace(Room):
     """ a class that represents the living space for fellows """
@@ -49,9 +52,9 @@ class LivingSpace(Room):
     def populate_room_names(self):
         """ living space names """
         living = {
-            'Green': [], 'Blue': [], 'Yellow': [], 'Lilac': [],
-            'Orange': [], 'White': [], 'Brown': [],
-            'Turquoise': [], 'Grey': [], 'Purple': []
+            'green': [], 'blue': [], 'yellow': [], 'lilac': [],
+            'orange': [], 'white': [], 'brown': [],
+            'turquoise': [], 'grey': [], 'purple': []
         }
         self.room_dict = dict([(key, []) for key in living])
         return self.room_dict
@@ -60,7 +63,3 @@ class LivingSpace(Room):
     def save(self, room_dictionary):
         self.room_dict = room_dictionary
         return self.room_dict
-
-    def unallocated(self, unallocated_list):
-        self.unallocated_people = unallocated_list
-        return self.unallocated_people
