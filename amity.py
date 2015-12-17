@@ -27,27 +27,38 @@ office_list = [
 livingspace_list = [
     'Green', 'Blue', 'Yellow', 'Lilac',
     'Orange', 'White', 'Brown', 'Turquoise', 'Grey', 'Purple'
- ]
+]
 
 
 class Amity(object):
+    @staticmethod
     def get_people_from_file(people_file, print_it=None):
         """ parse from text file """
-        people = []
+
+        people = list()
         """ read each line from the file and store in a temp list """
         employees = [
-            employees.rstrip('\n') for employees in open(sys.argv[1], 'r')
+            employees.rstrip('\n') for employees in open(people_file, 'r')
         ]
         for line in employees:
             match = search(
-              '^(\w+\s[^\s]+)[\s]{1,}(\w+)[\s]{0,}(\w)?', line)
+                '^(\w+\s[^\s]+)[\s]{1,}(\w+)[\s]{0,}(\w)?', line)
             details = match.groups()
             name, role, wants_accomodation = details
-            person = Person(name)
-            person.create(name, role, wants_accomodation)
+            # print details
+            person = Person.create(name, role, wants_accomodation)
             people.append(person)
+
+        """
+        randomly shuffle the employee list
+        to prevent unrandom FIFO behavior every time we re-allocate rooms
+        """
+        random.shuffle(people)
+        # for p in people:
+        #     print p
         if print_it is 'print':
             print people
+
         return people
 
     def get_room_occupants(self, room_name):
@@ -69,32 +80,26 @@ class Amity(object):
         """ read each line of input .txt file """
         employees = self.get_people_from_file(sys.argv[1])
 
-        """
-        randomly shuffle the employee list
-        to prevent unrandom FIFO behavior every time we re-allocate rooms
-        """
-        random.shuffle(employees)
-
         index = 0
 
         """ loop through each person to determine their affiliations """
         for person in employees:
-            print person
-            chosen_room = room_index[index % 10]
-            office_key = office_list[chosen_room]
+            if isinstance(person, Staff) or isinstance(person, Fellow):
+                chosen_room = room_index[index % 10]
+                office_key = office_list[chosen_room]
 
-            """ allocate only office space if space is available """
-            if len(office_rooms[office_key]) < office_space.capacity:
-                """ allocate office space to everyone """
-                office_rooms[office_key].append(person)
-            else:
-                """ those who missed rooms """
-                unalloc.append(person)
+                """ allocate only office space if space is available """
+                if len(office_rooms[office_key]) < office_space.capacity:
+                    """ allocate office space to everyone """
+                    office_rooms[office_key].append(person)
+                else:
+                    """ those who missed rooms """
+                    unalloc.append(person)
 
             """ pick a different room for the next iteration """
             index += 1
         if len(unalloc) != 0:
-            print office_space.unallocated(unalloc)
+            office_space.unallocated(unalloc)
 
         return office_rooms
 
@@ -108,49 +113,33 @@ class Amity(object):
         room_index = list(range(10))
         random.shuffle(room_index)
 
-        """ read the employees from the input .txt file """
-        employees = [
-            employees.rstrip('\n') for employees in open(sys.argv[1], 'r')
-        ]
-        living_fellows = []
-        person_traits = []
-        for person in employees:
-            person_traits = person.split(' ')
-            if len(person_traits) == 4:
-                if person_traits[3].upper() == 'Y':
-                    living_fellows.append(person)
-
-        """ randomly shuffle the employee list
-           to prevent FIFO repetition  every time we allocate rooms """
-        random.shuffle(living_fellows)
+        """ read each line of input .txt file """
+        employees = self.get_people_from_file(sys.argv[1])
 
         index = 0
         """ loop through each person to determine their affiliations """
-        for person in living_fellows:
-            """ use space char as the delimeter """
-            persons_description = [x.rstrip() for x in person.split(' ')]
-
-            chosen_room = room_index[index % 10]
-            living_key = livingspace_list[chosen_room]
+        for person in employees:
             """ ensure the rooms are available """
-            if len(living_rooms[living_key]) < living_space.capacity:
-                """ a fellow needs a place to live too """
-                living_rooms[living_key].append(
-                    persons_description[0] +
-                    ' ' + persons_description[1])
-            else:
-                """ those who missed rooms """
-                unalloc.append(person)
-            index += 1
+            if isinstance(person, Fellow):
+                chosen_room = room_index[index % 10]
+                living_key = livingspace_list[chosen_room]
+
+                if len(living_rooms[living_key]) < living_space.capacity:
+                    """ a fellow needs a place to live too """
+                    if person.wants_accomodation:
+                        living_rooms[living_key].append(person)
+                else:
+                    """ those who missed rooms """
+                    unalloc.append(person)
+                index += 1
         if len(unalloc) != 0:
             living_space.unallocated(unalloc)
         return living_rooms
 
-amity = Amity()
-print amity.get_people_from_file(sys.argv[1])
-office = Office()
-living = LivingSpace()
-office.save(amity.allocate_office_space())
-living.save(amity.allocate_living_space())
-print office.get_room_occupants("valhalla")
+# amity = Amity()
+# office = Office()
+# living = LivingSpace()
+# office.save(amity.allocate_office_space())
+# print living.save(amity.allocate_living_space())
+# print office.get_room_occupants("valhalla")
 # print office.unallocated_people

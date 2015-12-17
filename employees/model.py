@@ -11,11 +11,13 @@ class Person(object):
         a_person = Role.type_of[role.lower()]
         person = a_person(name)
         person.office = None
+        if isinstance(person, Staff):
+            person.wants_accomodation = False
         if isinstance(person, Fellow):
-            if wants_accomodation == 'Y' or wants_accomodation is True:
-                    Person.wants_accomodation = True
+            if wants_accomodation == 'Y':
+                person.wants_accomodation = True
             else:
-                Person.wants_accomodation = False
+                person.wants_accomodation = False
             person.living_space = None
         return person
 
@@ -28,7 +30,7 @@ class Person(object):
         self.office = office
 
     def __repr__(self):
-        return "Person: {0}".format(self.name)
+        return "Person: {0} {1}".format(self.name, self.wants_accomodation)
 
 
 class Staff(Person):
@@ -37,7 +39,7 @@ class Staff(Person):
         return False
 
     def __repr__(self):
-        return "Staff: {0}".format(self.name)
+        return "Staff: {0} {1}".format(self.name, self.wants_accomodation)
 
 
 class Fellow(Person):
@@ -54,7 +56,7 @@ class Fellow(Person):
         self.living_space = room
 
     def __repr__(self):
-        return "Fellow: {0}".format(self.name)
+        return "Fellow: {0} {1}".format(self.name, self.wants_accomodation)
 
 
 class Role:
