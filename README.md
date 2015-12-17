@@ -1,4 +1,5 @@
 # amity-room-allocation
+![Travis CI](https://travis-ci.org/andela-ggikera/amity-room-allocation.svg?branch=master)
 A room allocation algorithm for amity: implemented in Python.
 It's eccentric. Why? because it allocates rooms at random. Random is good.
 
