@@ -14,8 +14,10 @@ class Room(object):
         self.unallocated_people = unallocated_list
         return self.unallocated_people
 
-""" a class that represents the office space rooms """
+
 class Office(Room):
+    """ a class that represents the office space rooms """
+
     """ the capacity of a given office room """
     capacity = 6
 
@@ -28,9 +30,6 @@ class Office(Room):
         self.room_dict = dict([(key, []) for key in office])
         return self.room_dict
 
-    def get_room_occupants(self, room_name):
-        return self.room_dict[room_name]
-
     """ Save the allocated room and their respective occupants """
     def save(self, room_dictionary):
         self.room_dict = room_dictionary
@@ -41,8 +40,9 @@ class Office(Room):
         return self.unallocated_people
 
 
-""" a class that represents the living space for fellows """
 class LivingSpace(Room):
+    """ a class that represents the living space for fellows """
+
     """ the capacity of a given office room """
     capacity = 4
 
@@ -55,9 +55,6 @@ class LivingSpace(Room):
         }
         self.room_dict = dict([(key, []) for key in living])
         return self.room_dict
-
-    def get_room_occupants(self, room_name):
-        return self.room_dict[room_name]
 
     """ Save the allocated room and their respective occupants """
     def save(self, room_dictionary):

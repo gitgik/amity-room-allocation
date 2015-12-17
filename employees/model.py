@@ -1,23 +1,23 @@
 # models.
-import abc
 
 
 class Person(object):
     def __init__(self, name):
         self.name = name
 
-    def create(self, name, role, wants_accomodation=False):
+    @staticmethod
+    def create(name, role, wants_accomodation=False):
         """ create an instance of a fellow or a staff person """
         a_person = Role.type_of[role.lower()]
         person = a_person(name)
         person.office = None
         if isinstance(person, Fellow):
             if wants_accomodation == 'Y' or wants_accomodation is True:
-                person.wants_accomodation = True
+                    Person.wants_accomodation = True
             else:
-                person.wants_accomodation = False
+                Person.wants_accomodation = False
             person.living_space = None
-        return str(person)
+        return person
 
     def has_office(self):
         """ check if person has been assigned a room """
@@ -61,4 +61,3 @@ class Role:
     """ represents the collective role of a person: either fellow or staff
     """
     type_of = {'fellow': Fellow, 'staff': Staff}
-
