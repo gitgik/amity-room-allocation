@@ -11,7 +11,7 @@ if __name__ == "__main__":
     try:
         arg1 = sys.argv[1]
     except IndexError:
-        print "Usage: python amity.py <text file>"
+        print str("Usage: python amity.py <text file>")
         sys.exit(1)
 
 """ create a list of rooms (both office and living space)
