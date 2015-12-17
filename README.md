@@ -9,7 +9,7 @@ It's eccentric. Why? because it allocates rooms at random. Random is good.
 
 1. Clone the repo by simply executing the command
 
-`` git clone https://github.com/andela-ggikera/amity-room-allocation.git ``
+	`` git clone https://github.com/andela-ggikera/amity-room-allocation.git ``
 
 2. Install dependencies if you want to work under a sandbox
 
