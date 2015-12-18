@@ -6,12 +6,20 @@ python:
   - "3.5"
   - "3.5-dev" # 3.5 development branch
 
+before_install:
+  - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - conda update --yes conda
+
 # command to install dependencies
 install:
+	- "conda install --yes python=$TRAVIS_PYTHON_VERSION pip numpy scipy nose"
   - "pip install --upgrade pip"
   - "pip install python-coveralls"
   - "pip install coverage"
   - "pip install -r requirements.txt"
+  - "pip install ."
 
 # command to run tests
 script:
