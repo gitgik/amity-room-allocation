@@ -14,10 +14,10 @@ before_install:
 
 # command to install dependencies
 install:
+  - conda install anaconda-client
   - conda install --yes python=$TRAVIS_PYTHON_VERSION pip numpy scipy nose
   - pip install pep8 python-coveralls
   - pip install coverage
-  - pip install .
 
 # command to run tests
 script:
