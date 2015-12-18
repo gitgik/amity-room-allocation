@@ -46,7 +46,7 @@ class Amity(object):
     """ this class randomly allocates rooms to persons """
 
     @staticmethod
-    def get_people_from_file(people_file, print_it=None):
+    def get_people_from_file(people_file):
         """ parse from text file """
 
         people = list()
@@ -68,11 +68,6 @@ class Amity(object):
         to prevent unrandom FIFO behavior every time we re-allocate rooms
         """
         random.shuffle(people)
-
-        """ give output - debugging option """
-        if print_it is 'yes':
-            print (people)
-
         return people
 
     def allocate_office_space(self, input_file, is_a_file=False):
@@ -103,6 +98,7 @@ class Amity(object):
                 """ check whether the room has space for an allocation """
                 if len(office_rooms[office_key]) < office_space.capacity:
                     """ allocate office space to everyone """
+                    person.assign_office(office_key)
                     office_rooms[office_key].append(person)
                 else:
                     """ those who missed rooms """
@@ -111,7 +107,7 @@ class Amity(object):
             """ pick a different room for the next iteration """
             index += 1
         if len(unalloc) > 0:
-            print (office_space.unallocated_people(unalloc))
+            office_space.unallocated_people(unalloc)
 
         return office_rooms
 
@@ -149,7 +145,7 @@ class Amity(object):
                 else:
                     """ those who missed rooms """
                     unalloc.append(person)
-                index += 1
+            index += 1
         if len(unalloc) != 0:
             living_space.unallocated_people(unalloc)
         return living_rooms

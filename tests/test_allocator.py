@@ -76,8 +76,12 @@ class AllocationTestCase(unittest.TestCase):
             self.a.allocate_office_space(self.f))
         self.office.save(
             self.a.allocate_office_space(self.s))
+        unallocated = self.office.get_unallocated_people()
         self.assertEquals(self.s.has_living_space(), False)
         self.assertEquals(self.f.has_living_space(), True)
+        self.assertEquals(self.s.has_office(), True)
+        self.assertEquals(self.f.has_office(), True)
+        self.assertListEqual(unallocated, [])
         self.assertIsNotNone(fellows_l_space)
 
     def test_finding_room_occupants(self):

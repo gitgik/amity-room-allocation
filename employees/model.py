@@ -39,6 +39,7 @@ class Person(object):
     def assign_office(self, office):
         """ assign a person to an office provided """
         self.office = office
+        return self.office
 
     def __repr__(self):
         return "(Fellow: {0}, {1})".format(self.name, self.wants_accomodation)
