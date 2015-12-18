@@ -7,12 +7,13 @@ python:
   - "nightly" # currently points to 3.6-dev
 # command to install dependencies
 install:
-	- "pip install --upgrade pip"
- 	- "pip install -r requirements.txt"
- 	- "pip install pep8 python-coveralls"
+  - "pip install --upgrade pip"
+  - "pip install python-coveralls"
+  - "pip install coverage"
+  - "pip install -r requirements.txt"
 
 # command to run tests
 script:
-	- nosetests --with-coverage --logging-level=INFO
+  - nosetests --with-coverage
 after-success:
-	- coveralls
+  - coveralls
