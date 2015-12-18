@@ -14,12 +14,11 @@ before_install:
 
 # command to install dependencies
 install:
-	- "conda install --yes python=$TRAVIS_PYTHON_VERSION pip numpy scipy nose"
-  - "pip install --upgrade pip"
-  - "pip install python-coveralls"
-  - "pip install coverage"
-  - "pip install -r requirements.txt"
-  - "pip install ."
+	- conda install --yes python=$TRAVIS_PYTHON_VERSION pip numpy scipy nose
+  - pip install python-coveralls
+  - pip install coverage
+  - pip install -r requirements.txt
+  - pip install .
 
 # command to run tests
 script:
