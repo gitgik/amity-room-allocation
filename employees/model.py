@@ -67,7 +67,7 @@ class Fellow(Person):
 
     def has_living_space(self):
         """ check if a fellow has accomodation """
-        return True if self.living_space is not None else False
+        return True if self.wants_accomodation is True else False
 
     def __repr__(self):
         return "(Fellow: {0}, {1})".format(self.name, self.wants_accomodation)

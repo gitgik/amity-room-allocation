@@ -77,6 +77,7 @@ class AllocationTestCase(unittest.TestCase):
         self.office.save(
             self.a.allocate_office_space(self.s))
         self.assertEquals(self.s.has_living_space(), False)
+        self.assertEquals(self.f.has_living_space(), True)
         self.assertIsNotNone(fellows_l_space)
 
     def test_finding_room_occupants(self):
@@ -89,8 +90,11 @@ class AllocationTestCase(unittest.TestCase):
         self.living.save(
             self.amity.allocate_living_space(file_path, is_a_file=True))
         valhalla_roomies = self.office.get_room_occupants('valhalla')
+        blue_roomies = self.living.get_room_occupants('blue')
         assigned_person1 = valhalla_roomies[0]
+        assigned_person2 = blue_roomies[0]
         self.assertIsInstance(assigned_person1, Person)
+        self.assertIsInstance(assigned_person2, Person)
 
 
 class FileInputTestCase(unittest.TestCase):
