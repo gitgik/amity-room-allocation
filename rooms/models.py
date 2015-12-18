@@ -20,13 +20,6 @@ class Room(object):
         """ get the occupants of a specific room """
         return self.room_dict[room_name.lower()]
 
-    def unallocated_people(self, unallocated_list):
-        if len(unallocated_list) > 0:
-            self.unalloc_people = unallocated_list
-            return self.unalloc_people
-        else:
-            return False
-
     def get_unallocated_people(self):
         return self.unalloc_people
 
@@ -52,6 +45,14 @@ class Office(Room):
         self.room_dict = room_dictionary
         return self.room_dict
 
+    def unallocated_people(self, input_list):
+        unalloc = []
+        if len(input_list) > 0:
+            for person in input_list:
+                if person.has_office is False:
+                    unalloc.append(person)
+        return unalloc
+
 
 class LivingSpace(Room):
     """ this class represents the living space for fellows """
@@ -73,3 +74,11 @@ class LivingSpace(Room):
         """ Save allocated rooms with occupants """
         self.room_dict = room_dictionary
         return self.room_dict
+
+    def unallocated_people(self, input_list):
+        unalloc = []
+        if len(input_list) > 0:
+            for person in input_list:
+                if person.has_living_space is False:
+                    unalloc.append(person)
+        return unalloc

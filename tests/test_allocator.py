@@ -18,6 +18,8 @@ from rooms.models import LivingSpace, Office
 from amity import Amity
 """ file path to the input .txt file containing people """
 file_path = 'input.txt'
+persons = []
+fellow_only = []
 
 
 class RoomPersonTestCase(unittest.TestCase):
@@ -69,13 +71,22 @@ class AllocationTestCase(unittest.TestCase):
         self.f = Person.create(
             'Jee Gikera', 'fellow', wants_accomodation='Y')
         self.s = Person.create('Chidi Nnadi', 'staff')
+        persons.append(self.s)
+        persons.append(self.f)
+        fellow_only.append(self.f)
         self.office = Office()
         self.living = LivingSpace()
         self.a = Amity()
+
         fellows_l_space = self.living.save(
             self.a.allocate_office_space(self.f))
         self.office.save(
             self.a.allocate_office_space(self.s))
+        un = self.office.unallocated_people(persons)
+        unl = self.living.unallocated_people(fellow_only)
+        self.assertEquals(un, [])
+        self.assertEquals(unl, [])
+
         unallocated = self.office.get_unallocated_people()
         self.assertEquals(self.s.has_living_space(), False)
         self.assertEquals(self.f.has_living_space(), True)
