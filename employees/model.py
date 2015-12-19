@@ -41,18 +41,12 @@ class Person(object):
         self.office = office
         return self.office
 
-    def __repr__(self):
-        return "(Fellow: {0}, {1})".format(self.name, self.wants_accomodation)
-
 
 class Staff(Person):
     """ this class represents a staff in amity """
 
     def has_living_space(self):
         return False
-
-    def __repr__(self):
-        return "(Staff: {0}, {1})".format(self.name, self.wants_accomodation)
 
 
 class Fellow(Person):
@@ -70,9 +64,6 @@ class Fellow(Person):
     def has_living_space(self):
         """ check if a fellow has accomodation """
         return True if self.wants_accomodation is True else False
-
-    def __repr__(self):
-        return "(Fellow: {0}, {1})".format(self.name, self.wants_accomodation)
 
 
 class Role:

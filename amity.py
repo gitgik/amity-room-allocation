@@ -111,8 +111,7 @@ class Amity(object):
         if is_a_file is True:
             employees = self.get_people_from_file(input_file)
         else:
-            employees = []
-            employees.append(input_file)
+            employees = list(input_file)
 
         index = 0
 
