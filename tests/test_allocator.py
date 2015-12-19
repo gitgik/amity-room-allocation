@@ -94,9 +94,13 @@ class AllocationTestCase(unittest.TestCase):
 
         o = Office('valhalla')
         l = LivingSpace('blue')
+        oo = self.s.assign_office_space(o)
+        ll = self.f.assign_living_space(l)
         o.assign_person(self.s)
         l.assign_person(self.f)
 
+        self.assertIsInstance(oo, Office)
+        self.assertIsInstance(ll, LivingSpace)
         self.assertIsNotNone(l)
         self.assertIsNotNone(o)
         self.office = Office('GreenHouse')
@@ -104,12 +108,6 @@ class AllocationTestCase(unittest.TestCase):
         self.a = Amity()
 
         lspace = self.a.allocate_office_space(offices_list, self.f)
-        self.a.allocate_office_space(livings_list, self.s)
-        un = self.office.unallocated_people(persons)
-        unl = self.living.unallocated_people(fellow_only)
-        self.assertEquals(un, [])
-        self.assertEquals(unl, [])
-
         allocated = self.office.get_occupants()
         self.assertEquals(self.s.has_living_space(), False)
         self.assertEquals(self.f.has_living_space(), True)

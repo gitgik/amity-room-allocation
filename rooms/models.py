@@ -36,14 +36,6 @@ class Office(Room):
                 self.occupants.append(person)
         return self.occupants
 
-    def unallocated_people(self, input_list):
-        unalloc = []
-        if len(input_list) > 0:
-            for person in input_list:
-                if person.has_office is False:
-                    unalloc.append(person)
-        return unalloc
-
 
 class LivingSpace(Room):
     """ this class represents the living space for fellows """
@@ -59,11 +51,3 @@ class LivingSpace(Room):
             if isinstance(person, Staff) or isinstance(person, Fellow):
                 self.occupants.append(person)
         return self.occupants
-
-    def unallocated_people(self, input_list):
-        unalloc = []
-        if len(input_list) > 0:
-            for person in input_list:
-                if person.has_living_space is False:
-                    unalloc.append(person)
-        return unalloc
