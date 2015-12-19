@@ -57,6 +57,7 @@ class Staff(Person):
 
 class Fellow(Person):
     """ this class represents a fellow in amity """
+    living_space = None
 
     def wants_living_space(self):
         return True if self.wants_accomodation else False
