@@ -98,7 +98,8 @@ class AllocationTestCase(unittest.TestCase):
         ll = self.f.assign_living_space(l)
         o.assign_person(self.s)
         l.assign_person(self.f)
-
+        self.assertTrue(self.s.has_office())
+        self.assertTrue(self.f.has_living_space())
         self.assertIsInstance(oo, Office)
         self.assertIsInstance(ll, LivingSpace)
         self.assertIsNotNone(l)
