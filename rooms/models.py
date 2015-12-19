@@ -26,7 +26,7 @@ class Office(Room):
         self.occupants = []
 
     def is_occupied(self):
-        return self.occupants < self.capacity
+        return len(self.occupants) < self.capacity
 
     def assign_person(self, person):
         if self.capacity >= len(self.occupants):
@@ -57,7 +57,7 @@ class LivingSpace(Room):
     occupants = []
 
     def is_occupied(self):
-        return self.occupants < self.capacity
+        return len(self.occupants) < self.capacity
 
     def assign_person(self, person):
         if self.capacity >= len(self.occupants):
