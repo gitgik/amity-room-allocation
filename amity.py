@@ -74,7 +74,8 @@ class Amity(object):
         """ allocate office space """
 
         # shuffle room numbers at random
-        room_index = range(10)
+        # use list() to support python 3
+        room_index = list(range(10))
         random.shuffle(room_index)
         # read each line of input .txt file
         if is_a_file is True:
@@ -103,7 +104,8 @@ class Amity(object):
         """ allocate living space """
 
         # shuffle room numbers at random
-        room_index = range(10)
+        # use list() to support python 3
+        room_index = list(range(10))
         random.shuffle(room_index)
         # read each line of input .txt file
         if is_a_file is True:

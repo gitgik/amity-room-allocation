@@ -95,7 +95,7 @@ class AllocationTestCase(unittest.TestCase):
         self.living = LivingSpace('BlueMoon')
         self.a = Amity()
 
-        fellows_l_space = self.a.allocate_office_space(offices_list, self.f)
+        lspace = self.a.allocate_office_space(offices_list, self.f)
         self.a.allocate_office_space(livings_list, self.s)
         un = self.office.unallocated_people(persons)
         unl = self.living.unallocated_people(fellow_only)
@@ -108,7 +108,7 @@ class AllocationTestCase(unittest.TestCase):
         self.assertEquals(self.s.has_office(), True)
         self.assertEquals(self.f.has_office(), True)
         self.assertIsNotNone(allocated)
-        self.assertIsNotNone(fellows_l_space)
+        self.assertIsNotNone(lspace)
 
     def test_finding_room_occupants(self):
         """ tests getting a given room's occupants """
