@@ -88,9 +88,17 @@ class AllocationTestCase(unittest.TestCase):
         self.f = Person.create(
             'Jee Gikera', 'fellow', wants_accomodation='Y')
         self.s = Person.create('Chidi Nnadi', 'staff')
+        fellow_only.append(self.f)
         persons.append(self.s)
         persons.append(self.f)
-        fellow_only.append(self.f)
+
+        o = Office('valhalla')
+        l = LivingSpace('blue')
+        o.assign_person(self.s)
+        l.assign_person(self.f)
+
+        self.assertIsNotNone(l)
+        self.assertIsNotNone(o)
         self.office = Office('GreenHouse')
         self.living = LivingSpace('BlueMoon')
         self.a = Amity()
@@ -105,8 +113,6 @@ class AllocationTestCase(unittest.TestCase):
         allocated = self.office.get_occupants()
         self.assertEquals(self.s.has_living_space(), False)
         self.assertEquals(self.f.has_living_space(), True)
-        # self.assertEquals(self.s.has_office(), True)
-        # self.assertEquals(self.f.has_office(), True)
         self.assertIsNotNone(allocated)
         self.assertIsNotNone(lspace)
 
