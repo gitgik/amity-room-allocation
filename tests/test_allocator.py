@@ -108,11 +108,13 @@ class AllocationTestCase(unittest.TestCase):
         self.living = LivingSpace('BlueMoon')
         self.a = Amity()
 
-        lspace = self.a.allocate_office_space(offices_list, self.f)
+        ospace = self.a.allocate_office_space(offices_list, self.f)
+        lspace = self.a.allocate_living_space(offices_list, self.f)
         allocated = self.office.get_occupants()
         self.assertEquals(self.s.has_living_space(), False)
         self.assertEquals(self.f.has_living_space(), True)
         self.assertIsNotNone(allocated)
+        self.assertIsNotNone(ospace)
         self.assertIsNotNone(lspace)
 
     def test_finding_room_occupants(self):
