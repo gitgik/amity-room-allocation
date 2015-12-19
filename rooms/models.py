@@ -4,46 +4,38 @@
 #                 persons to rooms in a building.
 # author         :Jee Githinji
 # email          :githinji.gikera@andela.com
-# date           :20151218
+# date           :12-18-2015
 # version        :0.0.1
 # python_version :2.7.10
 # ==============================================================================
 
+from employees.model import Staff, Fellow
+
 
 class Room(object):
     """ this class represents a room in a building """
-    def __init__(self, dict_of_rooms=None):
-        self.room_dict = dict_of_rooms
-        self.unalloc_people = []
 
-    def get_room_occupants(self, room_name):
-        """ get the occupants of a specific room """
-        return self.room_dict[room_name.lower()]
-
-    def get_unallocated_people(self):
-        return self.unalloc_people
+    def __init__(self, name):
+        self.name = name
 
 
 class Office(Room):
     """ this class represents the office-space rooms """
+    def __init__(self, name):
+        self.capacity = 6
+        self.occupants = []
 
-    """ the capacity of a given office room """
-    capacity = 6
+    def is_occupied(self):
+        return self.occupants < self.capacity
 
-    def populate_room_names(self):
-        """ populate empty office space with room names """
-        office = {
-            "allegro": [], "boma": [], "valhalla": [],
-            "hogwarts": [], "krypton": [], "oculus": [],
-            "gondolla": [], "amitoid": [], "punta": [], "borabora": []
-        }
-        self.room_dict = dict([(key, []) for key in office])
-        return self.room_dict
+    def assign_person(self, person):
+        if self.capacity >= len(self.occupants):
+            if isinstance(person, Staff) or isinstance(person, Fellow):
+                self.occupants.append(person)
+        return self.occupants
 
-    """ Save the allocated room and their respective occupants """
-    def save(self, room_dictionary):
-        self.room_dict = room_dictionary
-        return self.room_dict
+    def get_occupants(self):
+            return self.occupants
 
     def unallocated_people(self, input_list):
         unalloc = []
@@ -53,27 +45,28 @@ class Office(Room):
                     unalloc.append(person)
         return unalloc
 
+    def __repr__(self):
+        return "Office: {0}".format(self.name)
+
 
 class LivingSpace(Room):
     """ this class represents the living space for fellows """
 
-    """ the capacity of a given office room """
+    # the capacity of a given office room
     capacity = 4
+    occupants = []
 
-    def populate_room_names(self):
-        """ populate the empty living space  with room names """
-        living = {
-            'green': [], 'blue': [], 'yellow': [], 'lilac': [],
-            'orange': [], 'white': [], 'brown': [],
-            'turquoise': [], 'grey': [], 'purple': []
-        }
-        self.room_dict = dict([(key, []) for key in living])
-        return self.room_dict
+    def is_occupied(self):
+        return self.occupants < self.capacity
 
-    def save(self, room_dictionary):
-        """ Save allocated rooms with occupants """
-        self.room_dict = room_dictionary
-        return self.room_dict
+    def assign_person(self, person):
+        if self.capacity >= len(self.occupants):
+            if isinstance(person, Staff) or isinstance(person, Fellow):
+                self.occupants.append(person)
+        return False
+
+    def get_occupants(self):
+            return self.occupants
 
     def unallocated_people(self, input_list):
         unalloc = []
@@ -82,3 +75,6 @@ class LivingSpace(Room):
                 if person.has_living_space is False:
                     unalloc.append(person)
         return unalloc
+
+    def __repr__(self):
+        return "LivingSpace: {0}".format(self.name)

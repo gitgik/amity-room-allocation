@@ -36,7 +36,7 @@ class Person(object):
         """ check if person has been assigned a room """
         return True if self.office is not None else False
 
-    def assign_office(self, office):
+    def assign_office_space(self, office):
         """ assign a person to an office provided """
         self.office = office
         return self.office

@@ -21,6 +21,27 @@ file_path = 'input.txt'
 persons = []
 fellow_only = []
 
+# a list of living space
+livings = [
+    'green', 'blue', 'yellow', 'lilac',
+    'orange', 'white', 'brown',
+    'turquoise', 'grey', 'purple'
+]
+# create the office list
+livings_list = [
+    LivingSpace(living_space_name)
+    for living_space_name in livings
+]
+
+# a list of offices
+offices = [
+    "allegro", "boma", "valhalla",
+    "hogwarts", "krypton", "oculus",
+    "gondolla", "amitoid", "punta", "borabora"
+]
+# instantiate offices and store them in a list
+offices_list = [Office(office_name) for office_name in offices]
+
 
 class RoomPersonTestCase(unittest.TestCase):
     """ test the instantiation of rooms and people """
@@ -36,8 +57,8 @@ class RoomPersonTestCase(unittest.TestCase):
 
     def test_room_creation(self):
         """ create rooms and test against their class instances """
-        self.office = Office()
-        self.living = LivingSpace()
+        self.office = Office('Valhalla')
+        self.living = LivingSpace('PeckingOrder')
         self.assertIsInstance(self.office, Office)
         self.assertIsInstance(self.living, LivingSpace)
 
@@ -55,14 +76,10 @@ class AllocationTestCase(unittest.TestCase):
 
     def test_room_generation(self):
         """ generate rooms and test their specs """
-        self.office = Office()
-        self.living = LivingSpace()
+        self.office = Office('TopOffice')
+        self.living = LivingSpace('WoodWing')
         office_size = self.office.capacity
         living_size = self.living.capacity
-        office_rooms = self.office.populate_room_names()
-        living_rooms = self.living.populate_room_names()
-        self.assertEquals(len(office_rooms), 10)
-        self.assertEquals(len(living_rooms), 10)
         self.assertEquals(office_size, 6)
         self.assertEquals(living_size, 4)
 
@@ -74,42 +91,36 @@ class AllocationTestCase(unittest.TestCase):
         persons.append(self.s)
         persons.append(self.f)
         fellow_only.append(self.f)
-        self.office = Office()
-        self.living = LivingSpace()
+        self.office = Office('GreenHouse')
+        self.living = LivingSpace('BlueMoon')
         self.a = Amity()
 
-        fellows_l_space = self.living.save(
-            self.a.allocate_office_space(self.f))
-        self.office.save(
-            self.a.allocate_office_space(self.s))
+        fellows_l_space = self.a.allocate_office_space(offices_list, self.f)
+        self.a.allocate_office_space(livings_list, self.s)
         un = self.office.unallocated_people(persons)
         unl = self.living.unallocated_people(fellow_only)
         self.assertEquals(un, [])
         self.assertEquals(unl, [])
 
-        unallocated = self.office.get_unallocated_people()
+        allocated = self.office.get_occupants()
         self.assertEquals(self.s.has_living_space(), False)
         self.assertEquals(self.f.has_living_space(), True)
         self.assertEquals(self.s.has_office(), True)
         self.assertEquals(self.f.has_office(), True)
-        self.assertListEqual(unallocated, [])
+        self.assertIsNotNone(allocated)
         self.assertIsNotNone(fellows_l_space)
 
     def test_finding_room_occupants(self):
         """ tests getting a given room's occupants """
-        self.office = Office()
-        self.living = LivingSpace()
         self.amity = Amity()
-        self.office.save(
-            self.amity.allocate_office_space(file_path, is_a_file=True))
-        self.living.save(
-            self.amity.allocate_living_space(file_path, is_a_file=True))
-        valhalla_roomies = self.office.get_room_occupants('valhalla')
-        blue_roomies = self.living.get_room_occupants('blue')
-        assigned_person1 = valhalla_roomies[0]
-        assigned_person2 = blue_roomies[0]
-        self.assertIsInstance(assigned_person1, Person)
-        self.assertIsInstance(assigned_person2, Person)
+        o = self.amity.allocate_office_space(
+            offices_list, file_path, is_a_file=True)
+        l = self.amity.allocate_living_space(
+            livings_list, file_path, is_a_file=True)
+        office_roomies = o[0].get_occupants()
+        living_roomies = l[0].get_occupants()
+        self.assertIsInstance(office_roomies[0], Person)
+        self.assertIsInstance(living_roomies[0], Person)
 
 
 class FileInputTestCase(unittest.TestCase):

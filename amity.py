@@ -13,9 +13,9 @@ from employees.model import Person, Fellow, Staff
 from rooms.models import Office, LivingSpace
 import random
 import sys
-from re import search
+import re
 
-""" exit gracefully when the text file to read is missing """
+# exit gracefully when the text file to read is missing
 if __name__ == "__main__":
     try:
         arg1 = sys.argv[1]
@@ -23,23 +23,26 @@ if __name__ == "__main__":
         print ("Usage: python amity.py <text file>")
         sys.exit(1)
 
-"""
-    create a list of keys to the office
-    dictionary definitions during random allocations
-"""
-office_list = [
-    'allegro', 'boma', 'valhalla',
-    'hogwarts', 'krypton', 'oculus', 'gondolla',
-    'amitoid', 'punta', 'borabora'
-]
-"""
-    create a list of keys to the living space
-    dictionary definitions during random allocations
-"""
-livingspace_list = [
+# a list of living space
+livings = [
     'green', 'blue', 'yellow', 'lilac',
-    'orange', 'white', 'brown', 'turquoise', 'grey', 'purple'
+    'orange', 'white', 'brown',
+    'turquoise', 'grey', 'purple'
 ]
+# create the office list
+livings_list = [
+    LivingSpace(living_space_name)
+    for living_space_name in livings
+]
+
+# a list of offices
+offices = [
+    "allegro", "boma", "valhalla",
+    "hogwarts", "krypton", "oculus",
+    "gondolla", "amitoid", "punta", "borabora"
+]
+# instantiate offices and store them in a list
+offices_list = [Office(office_name) for office_name in offices]
 
 
 class Amity(object):
@@ -49,38 +52,31 @@ class Amity(object):
     def get_people_from_file(people_file):
         """ parse from text file """
 
-        people = list()
-        """ read each line from the file and store in a temp list """
-        employees = [
-            employees.rstrip('\n') for employees in open(people_file, 'r')
-        ]
-        for line in employees:
-            match = search(
-                '^(\w+\s[^\s]+)[\s]{1,}(\w+)[\s]{0,}(\w)?', line)
+        people = []
+        # read each line from the file and store in a temp list
+        for line in open(people_file, 'r'):
+            employee = line.rstrip('\n')
+            match = re.search(
+                '^(\w+\s[^\s]+)[\s]{1,}(\w+)[\s]{0,}(\w)?', employee)
             details = match.groups()
             name, role, wants_accomodation = details
-            """ create the person with the credentials """
+            # create the person with the credentials
             person = Person.create(name, role, wants_accomodation)
             people.append(person)
 
-        """
-        randomly shuffle the employee list
-        to prevent unrandom FIFO behavior every time we re-allocate rooms
-        """
+        # randomly shuffle the employee list
+        # to prevent unrandom FIFO behavior every time we re-allocate rooms
         random.shuffle(people)
+
         return people
 
-    def allocate_office_space(self, input_file, is_a_file=False):
+    def allocate_office_space(self, offices_list, input_file, is_a_file=False):
         """ allocate office space """
-        office_space = Office()
-        office_rooms = office_space.populate_room_names()
-        unalloc = []
 
-        """ shuffle room numbers at random """
-        room_index = list(range(10))
+        # shuffle room numbers at random
+        room_index = range(10)
         random.shuffle(room_index)
-
-        """ read each line of input .txt file """
+        # read each line of input .txt file
         if is_a_file is True:
             employees = self.get_people_from_file(input_file)
         else:
@@ -89,39 +85,27 @@ class Amity(object):
 
         index = 0
 
-        """ loop through each person to determine their affiliations """
+        # loop through each person to determine their affiliations
         for person in employees:
             if isinstance(person, Staff) or isinstance(person, Fellow):
-                chosen_room = room_index[index % 10]
-                office_key = office_list[chosen_room]
-
-                """ check whether the room has space for an allocation """
-                if len(office_rooms[office_key]) < office_space.capacity:
-                    """ allocate office space to everyone """
-                    person.assign_office(office_key)
-                    office_rooms[office_key].append(person)
-                else:
-                    """ those who missed rooms """
-                    unalloc.append(person)
-
-            """ pick a different room for the next iteration """
+                chosen_room_index = room_index[index % 10]
+                chosen_office = offices_list[chosen_room_index]
+                # check whether the room has space for an allocation
+                if not chosen_office.is_occupied():
+                    # allocate office space to everyone
+                    person.assign_office_space(chosen_office)
+                    chosen_office.assign_person(person)
             index += 1
-        if len(unalloc) > 0:
-            office_space.unallocated_people(unalloc)
 
-        return office_rooms
+        return offices_list
 
-    """ allocate living space """
-    def allocate_living_space(self, input_file, is_a_file=False):
-        living_space = LivingSpace()
-        living_rooms = living_space.populate_room_names()
-        unalloc = []
+    def allocate_living_space(self, livings_list, input_file, is_a_file=False):
+        """ allocate living space """
 
-        """ shuffle room numbers at random """
-        room_index = list(range(10))
+        # shuffle room numbers at random
+        room_index = range(10)
         random.shuffle(room_index)
-
-        """ read each line of input .txt file """
+        # read each line of input .txt file
         if is_a_file is True:
             employees = self.get_people_from_file(input_file)
         else:
@@ -129,23 +113,29 @@ class Amity(object):
             employees.append(input_file)
 
         index = 0
-        """ loop through each person to determine their affiliations """
-        for person in employees:
-            """ ensure the rooms are available """
-            if isinstance(person, Fellow):
-                chosen_room = room_index[index % 10]
-                living_key = livingspace_list[chosen_room]
 
-                """ check whether the room has space for an allocation """
-                if len(living_rooms[living_key]) < living_space.capacity:
-                    """ a fellow needs a place to live too """
-                    if person.wants_living_space():
-                        person.assign_living_space(living_key)
-                        living_rooms[living_key].append(person)
-                else:
-                    """ those who missed rooms """
-                    unalloc.append(person)
+        # loop through each person to determine their affiliations
+        for person in employees:
+            # ensure the rooms are available
+            if isinstance(person, Fellow):
+                if person.wants_living_space():
+                    chosen_room_index = room_index[index % 10]
+                    chosen_living_room = livings_list[chosen_room_index]
+
+                    # check whether the room has space for an allocation
+                    if not chosen_living_room.is_occupied():
+                        # a fellow needs a place to live too
+                        person.assign_living_space(chosen_living_room)
+                        chosen_living_room.assign_person(person)
             index += 1
-        if len(unalloc) != 0:
-            living_space.unallocated_people(unalloc)
-        return living_rooms
+
+        return livings_list
+
+# amity = Amity()
+# l = amity.allocate_living_space(sys.argv[1], is_a_file=True)
+# o = amity.allocate_office_space(sys.argv[1], is_a_file=True)
+# for i in l:
+#     print i.occupants
+# print '\n'
+# for i in o:
+#     print i.occupants
