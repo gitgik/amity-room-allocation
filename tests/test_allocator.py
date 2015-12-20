@@ -104,6 +104,8 @@ class AllocationTestCase(unittest.TestCase):
         self.assertIsInstance(ll, LivingSpace)
         self.assertIsNotNone(l)
         self.assertIsNotNone(o)
+        self.assertTrue(l.is_occupied())
+        self.assertTrue(o.is_occupied())
         self.office = Office('GreenHouse')
         self.living = LivingSpace('BlueMoon')
         self.a = Amity()
