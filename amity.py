@@ -133,6 +133,7 @@ class Amity(object):
 
         return livings_list
 
+# testing allocation
 # amity = Amity()
 # l = amity.allocate_living_space(sys.argv[1], is_a_file=True)
 # o = amity.allocate_office_space(sys.argv[1], is_a_file=True)

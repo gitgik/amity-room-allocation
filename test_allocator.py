@@ -16,13 +16,14 @@ from random import randint
 from employees.model import Person, Fellow, Staff
 from rooms.models import LivingSpace, Office
 from amity import Amity
-""" file path to the input .txt file containing people """
+
+# file path to the input .txt file containing people
 file_path = 'input.txt'
 persons = []
 fellow_only = []
 
 # a list of living space
-livings = [
+living_spaces = [
     'green', 'blue', 'yellow', 'lilac',
     'orange', 'white', 'brown',
     'turquoise', 'grey', 'purple'
@@ -30,17 +31,17 @@ livings = [
 # create the office list
 livings_list = [
     LivingSpace(living_space_name)
-    for living_space_name in livings
+    for living_space_name in living_spaces
 ]
 
 # a list of offices
-offices = [
+office_spaces = [
     "allegro", "boma", "valhalla",
     "hogwarts", "krypton", "oculus",
     "gondolla", "amitoid", "punta", "borabora"
 ]
 # instantiate offices and store them in a list
-offices_list = [Office(office_name) for office_name in offices]
+offices_list = [Office(office_name) for office_name in office_spaces]
 
 
 class RoomPersonTestCase(unittest.TestCase):
@@ -56,14 +57,14 @@ class RoomPersonTestCase(unittest.TestCase):
         self.staff = Person.create('Chidi Nnadi', 'staff')
 
     def test_room_creation(self):
-        """ create rooms and test against their class instances """
+        # create rooms and test against their class instances
         self.office = Office('Valhalla')
         self.living = LivingSpace('PeckingOrder')
         self.assertIsInstance(self.office, Office)
         self.assertIsInstance(self.living, LivingSpace)
 
-    def test_fellow_staff_creation(self):
-        """ create employees and test against their class instances """
+    def test_person_creation(self):
+        # create employees and test against their class instances
         self.fellow = Person.create(
             'Jee Gikera', 'fellow', wants_accomodation=True)
         self.staff = Person.create('Chidi Nnadi', 'staff')
@@ -75,7 +76,7 @@ class AllocationTestCase(unittest.TestCase):
     """ tests the allocation of rooms to persons """
 
     def test_room_generation(self):
-        """ generate rooms and test their specs """
+        # generate rooms and test their specs
         self.office = Office('TopOffice')
         self.living = LivingSpace('WoodWing')
         office_size = self.office.capacity
@@ -84,34 +85,35 @@ class AllocationTestCase(unittest.TestCase):
         self.assertEquals(living_size, 4)
 
     def test_allocation_to_rooms(self):
-        """ tests the allocation of rooms """
-        self.f = Person.create(
+        # tests the allocation of persons to rooms
+        self.fellow = Person.create(
             'Jee Gikera', 'fellow', wants_accomodation='Y')
-        self.s = Person.create('Chidi Nnadi', 'staff')
-        fellow_only.append(self.f)
-        persons.append(self.s)
-        persons.append(self.f)
+        self.staff = Person.create('Chidi Nnadi', 'staff')
+        office_room = Office('valhalla')
+        living_room = LivingSpace('blue')
+        # store person instances for testing
+        fellow_only.append(self.fellow)
+        persons.append(self.staff)
+        persons.append(self.fellow)
 
-        o = Office('valhalla')
-        l = LivingSpace('blue')
-        oo = self.s.assign_office_space(o)
-        ll = self.f.assign_living_space(l)
-        o.assign_person(self.s)
-        l.assign_person(self.f)
+        office_results = self.s.assign_office_space(office_room)
+        living_results = self.f.assign_living_space(living_room)
+        office_room.assign_person(self.s)
+        living_room.assign_person(self.f)
         self.assertTrue(self.s.has_office())
         self.assertTrue(self.f.has_living_space())
-        self.assertIsInstance(oo, Office)
-        self.assertIsInstance(ll, LivingSpace)
-        self.assertIsNotNone(l)
-        self.assertIsNotNone(o)
-        self.assertTrue(l.is_occupied())
-        self.assertTrue(o.is_occupied())
+        self.assertIsInstance(office_results, Office)
+        self.assertIsInstance(living_results, LivingSpace)
+        self.assertIsNotNone(living_room)
+        self.assertIsNotNone(office_room)
+        self.assertTrue(living_room.is_occupied())
+        self.assertTrue(office_room.is_occupied())
         self.office = Office('GreenHouse')
         self.living = LivingSpace('BlueMoon')
-        self.a = Amity()
+        self.amity = Amity()
 
-        ospace = self.a.allocate_office_space(offices_list, self.f)
-        lspace = self.a.allocate_living_space(offices_list, self.f)
+        ospace = self.amity.allocate_office_space(offices_list, self.f)
+        lspace = self.amity.allocate_living_space(offices_list, self.f)
         allocated = self.office.get_occupants()
         self.assertEquals(self.s.has_living_space(), False)
         self.assertEquals(self.f.has_living_space(), True)
@@ -122,12 +124,12 @@ class AllocationTestCase(unittest.TestCase):
     def test_finding_room_occupants(self):
         """ tests getting a given room's occupants """
         self.amity = Amity()
-        o = self.amity.allocate_office_space(
+        office_results = self.amity.allocate_office_space(
             offices_list, file_path, is_a_file=True)
-        l = self.amity.allocate_living_space(
+        living_results = self.amity.allocate_living_space(
             livings_list, file_path, is_a_file=True)
-        office_roomies = o[0].get_occupants()
-        living_roomies = l[0].get_occupants()
+        office_roomies = office_results[0].get_occupants()
+        living_roomies = living_results[0].get_occupants()
         self.assertIsNotNone(office_roomies)
         self.assertIsNotNone(living_roomies)
 
@@ -135,7 +137,7 @@ class AllocationTestCase(unittest.TestCase):
 class FileInputTestCase(unittest.TestCase):
     """ tests file IO to the program """
 
-    def test_can_parse_people_from_file(self):
+    def test_parsing_file(self):
         persons = Amity.get_people_from_file(file_path)
         self.assertEquals(len(persons), 43)
         self.assertIsInstance(persons[randint(0, 30)], Person)

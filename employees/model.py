@@ -19,8 +19,8 @@ class Person(object):
     @staticmethod
     def create(name, role, wants_accomodation=False):
         # create an instance of a fellow or a staff person
-        a_person = Role.type_of[role.lower()]
-        person = a_person(name)
+        employee = Role.type_of[role.lower()]
+        person = employee(name)
         person.office = None
         if isinstance(person, Staff):
             person.wants_accomodation = False
