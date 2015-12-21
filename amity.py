@@ -55,6 +55,7 @@ class Amity(object):
             for occupant in room.occupants:
                 print (occupant.name)
             print ("\n")
+        return True
 
     def get_unallocated(self):
         return self.unallocated

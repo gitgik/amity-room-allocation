@@ -91,17 +91,20 @@ class AllocationTestCase(unittest.TestCase):
         self.amity.allocate_living_space(file_path, is_a_file=True)
         self.amity.allocate_office_space(file_path, is_a_file=True)
         allocations = self.amity.get_allocations()
+        print_allocation = self.amity.print_allocations()
         self.assertIsNotNone(allocations)
+        self.assertTrue(print_allocation)
 
     def test_unallocated(self):
         """ test getting unallocated people if any """
         amity = Amity()
         amity.allocate_office_space(file_path, is_a_file=True)
         unalloc = amity.get_unallocated()
+        unallocated = amity.unallocated
         # the rooms are currently 10, each taking 4 occupants,
         # therefore we don't have unallocated persons
         self.assertEquals(unalloc, [])
-
+        self.assertEquals(unallocated, [])
 
 
 if __name__ == '__main__':
