@@ -59,10 +59,10 @@ class Amity(object):
         # room_name, room_type
         # person 1, person 2, ... person n
         for room in self.allocations:
-            print "%s (%s)" % (room.name, room.room_type)
+            print ("%s (%s)" % (room.name, room.room_type))
             for occupant in room.occupants:
-                print occupant.name
-            print "\n"
+                print (occupant.name)
+            print ("\n")
 
     def get_unallocated():
         pass
