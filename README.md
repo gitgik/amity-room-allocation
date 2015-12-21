@@ -21,6 +21,6 @@ It's eccentric. Why? because it allocates rooms at random. Random is good.
 
 4. You are good to go! Just use an input text file containing the list of employees to be allocated.
 
-	`` python amity.py <input.txt> ``
+	`` python sample/sample.py <input.txt> ``
 
 
