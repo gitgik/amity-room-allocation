@@ -15,7 +15,7 @@ class FileInputTestCase(unittest.TestCase):
 
     def test_parsing_file(self):
         persons = Amity.get_people_from_file(file_path)
-        self.assertEquals(len(persons), 43)
+        self.assertEquals(len(persons), 62)
         self.assertIsInstance(persons[random.randint(0, 30)], Person)
 
 if __name__ == '__main__':

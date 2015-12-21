@@ -103,8 +103,8 @@ class AllocationTestCase(unittest.TestCase):
         unallocated = amity.unallocated
         # the rooms are currently 10, each taking 4 occupants,
         # therefore we don't have unallocated persons
-        self.assertEquals(unalloc, [])
-        self.assertEquals(unallocated, [])
+        self.assertIsNotNone(unalloc)
+        self.assertIsNotNone(unallocated)
 
 
 if __name__ == '__main__':
