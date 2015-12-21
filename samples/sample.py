@@ -23,4 +23,4 @@ amity.allocate_office_space(sys.argv[1], is_a_file=True)
 
 amity.get_allocations()
 amity.print_allocations()
-amity.get_unallocated()
+print amity.get_unallocated()

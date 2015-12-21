@@ -112,9 +112,9 @@ class Amity(object):
                     person.assign_office_space(chosen_office)
                     chosen_office.assign_person(person)
                     self.allocations.append(chosen_office)
-                index += 1
-            else:
-                self.unallocated.append(person)
+                else:
+                    self.unallocated.append(person)
+            index += 1
 
         return offices_list
 
@@ -145,7 +145,6 @@ class Amity(object):
                     chosen_room_index = room_index[index % 10]
                     chosen_living_room = livings_list[chosen_room_index]
                     # check whether the room has space for an allocation
-
                     if not chosen_living_room.is_occupied():
                         # a fellow needs a place to live too
                         person.assign_living_space(chosen_living_room)
