@@ -12,16 +12,7 @@
 from employees.model import Person, Fellow, Staff
 from rooms.models import Office, LivingSpace
 import random
-import sys
 import re
-
-# exit gracefully when the text file to read is missing
-if __name__ == "__main__":
-    try:
-        arg1 = sys.argv[1]
-    except IndexError:
-        print ("Usage: python amity.py <text file>")
-        sys.exit(1)
 
 # a list of living space
 livings = [
@@ -43,9 +34,10 @@ class Amity(object):
 
     def __init__(self):
         self.allocations = []
+        self.unallocated = []
 
     def add_rooms(self, room_list, room_type):
-        # instantiate offices and store them in a list
+        """ instantiate offices and store them in a list """
         if room_type.lower() == 'office':
             room_list = [Office(room_name) for room_name in room_list]
         elif room_type.lower() == 'living':
@@ -56,16 +48,16 @@ class Amity(object):
         return self.allocations
 
     def print_allocations(self):
-        # room_name, room_type
-        # person 1, person 2, ... person n
+        """ print all allocations """
+
         for room in self.allocations:
             print ("%s (%s)" % (room.name, room.room_type))
             for occupant in room.occupants:
                 print (occupant.name)
             print ("\n")
 
-    def get_unallocated():
-        pass
+    def get_unallocated(self):
+        return self.unallocated
 
     @staticmethod
     def get_people_from_file(people_file):
@@ -120,6 +112,8 @@ class Amity(object):
                     chosen_office.assign_person(person)
                     self.allocations.append(chosen_office)
                 index += 1
+            else:
+                self.unallocated.append(person)
 
         return offices_list
 
@@ -156,6 +150,8 @@ class Amity(object):
                         person.assign_living_space(chosen_living_room)
                         chosen_living_room.assign_person(person)
                         self.allocations.append(chosen_living_room)
+                    else:
+                        self.unallocated.append(person)
                     index += 1
 
         return livings_list
