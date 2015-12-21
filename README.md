@@ -13,11 +13,11 @@ It's eccentric. Why? because it allocates rooms at random. Random is good.
 
 2. Install dependencies if you want to work under a sandbox
 
-	`` pip install -r /path/to/requirements.txt``
+	`` pip install -r requirements.txt``
 
 3. Test it first: (TDD is good)
 
-	`` nodetests tests/ ``
+	`` nosetests tests/ ``
 
 4. You are good to go! Just use an input text file containing the list of employees to be allocated.
 
