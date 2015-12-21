@@ -29,11 +29,6 @@ livings = [
     'orange', 'white', 'brown',
     'turquoise', 'grey', 'purple'
 ]
-# create the office list
-livings_list = [
-    LivingSpace(living_space_name)
-    for living_space_name in livings
-]
 
 # a list of offices
 offices = [
@@ -41,12 +36,36 @@ offices = [
     "hogwarts", "krypton", "oculus",
     "gondolla", "amitoid", "punta", "borabora"
 ]
-# instantiate offices and store them in a list
-offices_list = [Office(office_name) for office_name in offices]
 
 
 class Amity(object):
     """ this class randomly allocates rooms to persons """
+
+    def __init__(self):
+        self.allocations = []
+
+    def add_rooms(self, room_list, room_type):
+        # instantiate offices and store them in a list
+        if room_type.lower() == 'office':
+            room_list = [Office(room_name) for room_name in room_list]
+        elif room_type.lower() == 'living':
+            room_list = [LivingSpace(room_name) for room_name in room_list]
+        return room_list
+
+    def get_allocations(self):
+        return self.allocations
+
+    def print_allocations(self):
+        # room_name, room_type
+        # person 1, person 2, ... person n
+        for room in self.allocations:
+            print "%s (%s)" % (room.name, room.room_type)
+            for occupant in room.occupants:
+                print occupant.name
+            print "\n"
+
+    def get_unallocated():
+        pass
 
     @staticmethod
     def get_people_from_file(people_file):
@@ -70,8 +89,11 @@ class Amity(object):
 
         return people
 
-    def allocate_office_space(self, offices_list, input_file, is_a_file=False):
+    def allocate_office_space(self, input_file, is_a_file=False):
         """ allocate office space """
+
+        # add room names to the office list
+        offices_list = self.add_rooms(offices, 'office')
 
         # shuffle room numbers at random
         # use list() to support python 3
@@ -96,12 +118,16 @@ class Amity(object):
                     # allocate office space to everyone
                     person.assign_office_space(chosen_office)
                     chosen_office.assign_person(person)
-            index += 1
+                    self.allocations.append(chosen_office)
+                index += 1
 
         return offices_list
 
-    def allocate_living_space(self, livings_list, input_file, is_a_file=False):
+    def allocate_living_space(self, input_file, is_a_file=False):
         """ allocate living space """
+
+        # add rooms to the living lists
+        livings_list = self.add_rooms(livings, 'living')
 
         # shuffle room numbers at random
         # use list() to support python 3
@@ -123,22 +149,13 @@ class Amity(object):
                 if person.wants_living_space():
                     chosen_room_index = room_index[index % 10]
                     chosen_living_room = livings_list[chosen_room_index]
-
                     # check whether the room has space for an allocation
+
                     if not chosen_living_room.is_occupied():
                         # a fellow needs a place to live too
                         person.assign_living_space(chosen_living_room)
                         chosen_living_room.assign_person(person)
-            index += 1
+                        self.allocations.append(chosen_living_room)
+                    index += 1
 
         return livings_list
-
-# testing allocation
-# amity = Amity()
-# l = amity.allocate_living_space(sys.argv[1], is_a_file=True)
-# o = amity.allocate_office_space(sys.argv[1], is_a_file=True)
-# for i in l:
-#     print i.occupants
-# print '\n'
-# for i in o:
-#     print i.occupants

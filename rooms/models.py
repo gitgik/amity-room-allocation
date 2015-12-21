@@ -26,9 +26,10 @@ class Room(object):
 class Office(Room):
     """ this class represents the office-space rooms """
     capacity = 6
+    room_type = "Office"
 
     def is_occupied(self):
-        return len(self.occupants) < self.capacity
+        return len(self.occupants) == self.capacity
 
     def assign_person(self, person):
         if self.capacity > len(self.occupants):
@@ -42,12 +43,13 @@ class LivingSpace(Room):
 
     # the capacity of a given office room
     capacity = 4
+    room_type = "LivingSpace"
 
     def is_occupied(self):
-        return len(self.occupants) < self.capacity
+        return len(self.occupants) == self.capacity
 
     def assign_person(self, person):
         if self.capacity > len(self.occupants):
-            if isinstance(person, Staff) or isinstance(person, Fellow):
+            if isinstance(person, Fellow):
                 self.occupants.append(person)
         return self.occupants
