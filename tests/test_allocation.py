@@ -73,7 +73,7 @@ class AllocationTestCase(unittest.TestCase):
         self.assertIsNotNone(ospace)
         self.assertIsNotNone(lspace)
 
-    def test_finding_room_occupants(self):
+    def test_getting_room_occupants(self):
         """ tests getting a given room's occupants """
         self.amity = Amity()
         office_results = self.amity.allocate_office_space(
