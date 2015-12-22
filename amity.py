@@ -38,6 +38,7 @@ class Amity(object):
 
     def add_rooms(self, room_list, room_type):
         """ instantiate offices and store them in a list """
+
         if room_type.lower() == 'office':
             room_list = [Office(room_name) for room_name in room_list]
         elif room_type.lower() == 'living':
@@ -114,7 +115,7 @@ class Amity(object):
                     self.allocations.append(chosen_office)
                 else:
                     self.unallocated.append(person)
-            index += 1
+                index += 1
 
         return offices_list
 

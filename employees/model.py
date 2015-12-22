@@ -54,15 +54,16 @@ class Fellow(Person):
     living_space = None
 
     def wants_living_space(self):
+        # checks whether the fellow wants living space
         return True if self.wants_accomodation else False
 
     def assign_living_space(self, room):
-        # assign accomodation room to fellow
+        # assigns accomodation room to fellow
         self.living_space = room
         return self.living_space
 
     def has_living_space(self):
-        # check if a fellow has accomodation
+        # checks if a fellow has accomodation
         return True if self.wants_accomodation is True else False
 
 
