@@ -18,7 +18,7 @@ class Person(object):
 
     @staticmethod
     def create(name, role, wants_accomodation=False):
-        # create an instance of a fellow or a staff person
+        """ create an instance of a fellow or a staff person """
         employee = Role.type_of[role.lower()]
         person = employee(name)
         person.office = None
@@ -33,11 +33,11 @@ class Person(object):
         return person
 
     def has_office(self):
-        # check if person has been assigned a room
+        """ check if person has been assigned a room """
         return True if self.office is not None else False
 
     def assign_office_space(self, office):
-        # assign a person to an office provided
+        """ assign a person to an office provided """
         self.office = office
         return self.office
 
@@ -51,19 +51,20 @@ class Staff(Person):
 
 class Fellow(Person):
     """ this class represents a fellow in amity """
+
     living_space = None
 
     def wants_living_space(self):
-        # checks whether the fellow wants living space
+        """ checks whether the fellow wants living space """
         return True if self.wants_accomodation else False
 
     def assign_living_space(self, room):
-        # assigns accomodation room to fellow
+        """ assigns accomodation room to fellow """
         self.living_space = room
         return self.living_space
 
     def has_living_space(self):
-        # checks if a fellow has accomodation
+        """ checks if a fellow has accomodation """
         return True if self.wants_accomodation is True else False
 
 

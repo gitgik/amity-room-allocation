@@ -37,7 +37,7 @@ class AllocationTestCase(unittest.TestCase):
     """ tests the allocation of rooms to persons """
 
     def test_allocation_to_rooms(self):
-        # tests the allocation of persons to rooms
+        """ tests the allocation of persons to rooms """
         self.fellow = Person.create(
             'Jee Gikera', 'fellow', wants_accomodation='Y')
         self.staff = Person.create('Chidi Nnadi', 'staff')

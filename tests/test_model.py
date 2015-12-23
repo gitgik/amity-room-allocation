@@ -41,7 +41,7 @@ class RoomPersonTestCase(unittest.TestCase):
         self.staff = Person.create('Chidi Nnadi', 'staff')
 
     def test_room_creation(self):
-        # generate rooms and test their specs
+        """ generate rooms and test their specs """
         self.office = Office('TopOffice')
         self.living = LivingSpace('WoodWing')
         office_size = self.office.capacity
@@ -52,7 +52,7 @@ class RoomPersonTestCase(unittest.TestCase):
         self.assertIsInstance(self.living, LivingSpace)
 
     def test_person_creation(self):
-        # create employees and test against their class instances
+        """ create employees and test against their class instances """
         self.fellow = Person.create(
             'Jee Gikera', 'fellow', wants_accomodation=True)
         self.staff = Person.create('Chidi Nnadi', 'staff')

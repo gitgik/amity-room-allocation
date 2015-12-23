@@ -37,8 +37,7 @@ class Amity(object):
         self.unallocated = []
 
     def add_rooms(self, room_list, room_type):
-        """ instantiate offices and store them in a list """
-
+        """ Instantiate offices and store them in a list """
         if room_type.lower() == 'office':
             room_list = [Office(room_name) for room_name in room_list]
         elif room_type.lower() == 'living':
@@ -49,8 +48,7 @@ class Amity(object):
         return self.allocations
 
     def print_allocations(self):
-        """ print all allocations """
-
+        """ Print all allocations """
         for room in self.allocations:
             print ("%s (%s)" % (room.name, room.room_type))
             for occupant in room.occupants:
@@ -63,8 +61,7 @@ class Amity(object):
 
     @staticmethod
     def get_people_from_file(people_file):
-        """ parse from text file """
-
+        """ Parse from text file """
         people = []
         # read each line from the file and store in a temp list
         for line in open(people_file, 'r'):
@@ -84,8 +81,7 @@ class Amity(object):
         return people
 
     def allocate_office_space(self, input_file, is_a_file=False):
-        """ allocate office space """
-
+        """ Allocate office space """
         # add room names to the office list
         offices_list = self.add_rooms(offices, 'office')
 
@@ -121,7 +117,6 @@ class Amity(object):
 
     def allocate_living_space(self, input_file, is_a_file=False):
         """ allocate living space """
-
         # add rooms to the living lists
         livings_list = self.add_rooms(livings, 'living')
 
