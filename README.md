@@ -3,7 +3,6 @@
 A room allocation algorithm for amity: implemented in Python.
 It's eccentric. Why? because it allocates rooms at random. Random is good.
 
----
 ## Instructions
 
 1. Clone the repo by simply executing the command
